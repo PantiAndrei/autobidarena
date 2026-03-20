@@ -131,12 +131,14 @@ function renderCars(cars) {
     card.innerHTML = `
       <div class="car-img-wrap">
         <img src="${imgSrc}" alt="${car.marca} ${car.model}" loading="lazy" />
+        <div class="car-img-overlay">
+          <div class="car-img-title">${car.marca} ${car.model}${car.an ? ' &middot; ' + car.an : ''}</div>
+          ${cpCil ? `<div class="car-img-engine">${cpCil}</div>` : ''}
+        </div>
         ${car.laComanda ? '<span class="car-badge-comanda">La Comanda</span>' : ''}
         ${imgCount > 1 ? `<span class="car-img-count">&#128247; ${imgCount}</span>` : ''}
       </div>
       <div class="car-body">
-        <h3 class="car-title">${car.marca} ${car.model}${car.an ? ' ' + car.an : ''}</h3>
-        ${cpCil ? `<div class="car-spec-extra">${cpCil}</div>` : ''}
         <div class="car-specs">
           ${car.an          ? `<span class="car-spec">${car.an}</span>` : ''}
           ${car.km          ? `<span class="car-spec">${Number(car.km).toLocaleString('ro-RO')} km</span>` : ''}
