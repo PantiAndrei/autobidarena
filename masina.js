@@ -224,8 +224,9 @@ function renderPage(car) {
   `).join('');
 
   /* WA links */
-  document.getElementById('cpWA').href  = waLink;
-  document.getElementById('cpWA2').href = waLink;
+  document.getElementById('cpWA').href       = waLink;
+  document.getElementById('cpWA2').href      = waLink;
+  document.getElementById('cpMobileWA').href = waLink;
 
   /* Specs table */
   const specsData = [
