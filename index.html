@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoBid Arena – Mașini de Vânzare în Sibiu</title>
+  <meta name="description" content="Vânzare auto, mașini la comandă, plată în rate și detailing profesional în Sibiu. Firmă autorizată, 100% recenzii pozitive." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── NAVBAR ──────────────────────────────────────────── -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <img src="assets/logo.jpg" alt="AutoBid Arena" />
+      </a>
+      <ul id="navLinks" class="nav-links">
+        <li><a href="#stock"     class="nav-link">Stock</a></li>
+        <li><a href="#servicii"  class="nav-link">Servicii</a></li>
+        <li><a href="#despre"    class="nav-link">Despre</a></li>
+        <li><a href="#contact"   class="nav-link">Contact</a></li>
+      </ul>
+      <a href="https://wa.me/40725762915?text=Bun%C4%83%20ziua%2C%20a%C8%99%20dori%20mai%20multe%20informa%C8%9Bii." target="_blank" class="btn-wa-nav">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.122 1.532 5.856L.073 23.927l6.244-1.638A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.213-3.706.972.988-3.61-.234-.37A9.818 9.818 0 1 1 12 21.818z"/></svg>
+        WhatsApp
+      </a>
+      <button id="navToggle" class="nav-toggle" aria-label="Meniu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-bg" style="background-image:url('assets/fundal.png')"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-badge">Firmă autorizată · Sibiu</span>
+      <h1 class="hero-title">Mașina ta perfectă<br/><span class="hero-green">la prețul corect</span></h1>
+      <p class="hero-subtitle">Stoc propriu verificat · Mașini la comandă · Plată în rate · Livrare la domiciliu</p>
+      <div class="hero-ctas">
+        <a href="#stock" class="btn-primary">Vezi stocul</a>
+        <a href="tel:+40725762915" class="btn-outline">Sună acum</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong id="statCars">—</strong><span>Mașini disponibile</span></div>
+        <div class="stat-sep"></div>
+        <div class="stat"><strong>17</strong><span>Recenzii pozitive</span></div>
+        <div class="stat-sep"></div>
+        <div class="stat"><strong>100%</strong><span>Recomandă</span></div>
+        <div class="stat-sep"></div>
+        <div class="stat"><strong>Nonstop</strong><span>Disponibili</span></div>
+      </div>
+    </div>
+    <a href="#stock" class="scroll-down" aria-label="Scroll">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </a>
+  </section>
+
+  <!-- ── STOCK ──────────────────────────────────────────── -->
+  <section id="stock">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">Stoc <span class="green">Disponibil</span></h2>
+        <p class="section-sub">Toate mașinile sunt verificate tehnic și au acte la zi</p>
+      </div>
+      <div class="stock-filters">
+        <button class="filter-btn active" data-filter="all">Toate</button>
+        <button class="filter-btn" data-filter="SUV">SUV</button>
+        <button class="filter-btn" data-filter="Sedan">Sedan</button>
+        <button class="filter-btn" data-filter="Hatchback">Hatchback</button>
+        <button class="filter-btn" data-filter="Break">Break</button>
+      </div>
+      <div id="carsGrid" class="cars-grid">
+        <div class="cars-loading">
+          <div class="spinner"></div>
+          <p>Se încarcă anunțurile...</p>
+        </div>
+      </div>
+      <p id="emptyStock" class="empty-stock" style="display:none">
+        Momentan nu există mașini în stoc. Contactați-ne pentru mașini la comandă.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── SERVICII ───────────────────────────────────────── -->
+  <section id="servicii">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">Serviciile <span class="green">Noastre</span></h2>
+        <p class="section-sub">Oferim servicii complete pentru mașina ta</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-icon">🚗</div>
+          <h3>Vânzare Auto</h3>
+          <p>Mașini verificate tehnic, cu istoric documentat și acte la zi. Transparență totală.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">📋</div>
+          <h3>Mașini la Comandă</h3>
+          <p>Nu găsești ce cauți? Îți aducem mașina dorită la specificațiile tale, din Germania sau Europa.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">💳</div>
+          <h3>Plată în Rate</h3>
+          <p>Finanțare accesibilă cu rate convenabile. Lucrăm cu mai mulți parteneri financiari.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🚚</div>
+          <h3>Livrare la Domiciliu</h3>
+          <p>Îți aducem mașina direct la ușă, oriunde în România. Comoditate maximă.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">✨</div>
+          <h3>Detailing & Polish</h3>
+          <p>Polish profesional și recondiționare faruri. Redăm strălucirea mașinii tale ca nouă.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🧽</div>
+          <h3>Curățare Tapițerie</h3>
+          <p>Curățare prin injecție-extracție. Interior curat și igienizat în profunzime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DESPRE ─────────────────────────────────────────── -->
+  <section id="despre">
+    <div class="section-inner despre-inner">
+      <div class="despre-text reveal">
+        <span class="eyebrow">De ce AutoBid Arena?</span>
+        <h2 class="section-title">Firmă autorizată,<br/><span class="green">nu samsari</span></h2>
+        <p>Mulți oameni iau țepe la achiziția de mașini din cauza lipsei de educație în domeniu. Noi suntem diferiți: cumpărăm mașini cu istoric verificabil, facem verificări reale și răspundem legal pentru ce vindem.</p>
+        <ul class="trust-list">
+          <li>✔ Mașini cumpărate mai scump, cu istoric verificabil</li>
+          <li>✔ Verificări reale, nu povești</li>
+          <li>✔ Kilometri reali, asumați legal</li>
+          <li>✔ Acte la zi</li>
+          <li>✔ Garanții obligatorii conform Protecției Consumatorului</li>
+        </ul>
+        <p class="trust-note">O mașină corectă costă mai mult, dar cumpărătorul are liniște după achiziție — nu surprize.</p>
+        <a href="tel:+40725762915" class="btn-primary">Sună pentru detalii</a>
+      </div>
+      <div class="despre-badge reveal">
+        <div class="badge-circle">
+          <strong>100%</strong>
+          <span>Recomandă</span>
+          <em>17 recenzii</em>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ────────────────────────────────────────── -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title">Contactează-<span class="green">ne</span></h2>
+        <p class="section-sub">Suntem disponibili nonstop pentru tine</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-items reveal">
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <strong>Adresă</strong>
+              <p>Strada Rahovei nr 59<br/>Sibiu, România 550381</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <strong>Telefon</strong>
+              <p><a href="tel:+40725762915">0725 762 915</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <strong>Email</strong>
+              <p><a href="mailto:alinionut_99@icloud.com">alinionut_99@icloud.com</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">🕐</div>
+            <div>
+              <strong>Program</strong>
+              <p>Nonstop, 24/7</p>
+            </div>
+          </div>
+          <a href="https://wa.me/40725762915?text=Bun%C4%83%20ziua%2C%20a%C8%99%20dori%20mai%20multe%20informa%C8%9Bii." target="_blank" class="btn-wa-big">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.122 1.532 5.856L.073 23.927l6.244-1.638A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.213-3.706.972.988-3.61-.234-.37A9.818 9.818 0 1 1 12 21.818z"/></svg>
+            Scrie pe WhatsApp
+          </a>
+        </div>
+        <div class="contact-map reveal">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2779.6!2d24.1467!3d45.7983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zStrada+Rahovei+nr+59+Sibiu!5e0!3m2!1sro!2sro!4v1"
+            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" title="AutoBid Arena locatie">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="assets/logo.jpg" alt="AutoBid Arena" />
+      </div>
+      <p class="footer-tagline">Vânzare auto · Mașini la comandă · Detailing profesional</p>
+      <p class="footer-addr">Strada Rahovei nr 59, Sibiu &nbsp;|&nbsp; 0725 762 915 &nbsp;|&nbsp; Nonstop</p>
+      <p class="footer-copy">&copy; 2025 AutoBid Arena. Toate drepturile rezervate.</p>
+    </div>
+  </footer>
+
+  <!-- ── CAR MODAL ──────────────────────────────────────── -->
+  <div id="carModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose" aria-label="Închide">&times;</button>
+      <div class="modal-img-wrap">
+        <img id="modalImg" src="" alt="" />
+      </div>
+      <div class="modal-body">
+        <h2 id="modalTitle"></h2>
+        <div id="modalSpecs" class="modal-specs"></div>
+        <p id="modalDesc" class="modal-desc"></p>
+        <div class="modal-price-row">
+          <span id="modalPrice" class="modal-price"></span>
+          <a id="modalWA" href="#" target="_blank" class="btn-wa-big">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.122 1.532 5.856L.073 23.927l6.244-1.638A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.213-3.706.972.988-3.61-.234-.37A9.818 9.818 0 1 1 12 21.818z"/></svg>
+            Contactează pe WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
