@@ -228,15 +228,19 @@
         <div class="form-grid">
           <div class="form-group">
             <label for="fMarca">Marcă *</label>
-            <input type="text" id="fMarca" placeholder="BMW" />
+            <input type="text" id="fMarca" list="marcaList" placeholder="BMW, Audi, Dacia..." autocomplete="off" />
+            <datalist id="marcaList"></datalist>
           </div>
           <div class="form-group">
             <label for="fModel">Model *</label>
-            <input type="text" id="fModel" placeholder="X5" />
+            <input type="text" id="fModel" list="modelList" placeholder="X5, Golf, Logan..." autocomplete="off" />
+            <datalist id="modelList"></datalist>
           </div>
           <div class="form-group">
             <label for="fAn">An fabricație</label>
-            <input type="number" id="fAn" placeholder="2020" min="1990" max="2030" />
+            <select id="fAn">
+              <option value="">— An —</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="fKm">Kilometraj</label>

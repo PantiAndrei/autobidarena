@@ -18,6 +18,57 @@ firebase.initializeApp(firebaseConfig);
 const db   = firebase.firestore();
 const auth = firebase.auth();
 
+/* ── CAR DATA ───────────────────────────────────────────── */
+const carData = {
+  'Alfa Romeo':    ['Giulia','Giulietta','Mito','Stelvio','Tonale','159','156','147'],
+  'Audi':          ['A1','A3','A4','A5','A6','A7','A8','Q2','Q3','Q5','Q7','Q8','TT','R8','e-tron'],
+  'BMW':           ['Seria 1','Seria 2','Seria 3','Seria 4','Seria 5','Seria 6','Seria 7','X1','X2','X3','X4','X5','X6','X7','Z4','M2','M3','M4','M5','iX','i4','i5'],
+  'Chevrolet':     ['Aveo','Cruze','Malibu','Captiva','Orlando','Spark','Trax'],
+  'Citroën':       ['C1','C3','C3 Aircross','C4','C4 Cactus','C5','C5 Aircross','C8','Berlingo','Jumper'],
+  'Dacia':         ['Logan','Logan MCV','Sandero','Sandero Stepway','Duster','Jogger','Spring','Dokker','Lodgy'],
+  'Fiat':          ['500','500L','500X','Bravo','Doblo','Ducato','Grande Punto','Panda','Punto','Tipo'],
+  'Ford':          ['EcoSport','Edge','Explorer','Fiesta','Focus','Galaxy','Ka','Kuga','Mondeo','Mustang','Puma','Ranger','S-Max','Transit'],
+  'Honda':         ['Accord','Civic','CR-V','FR-V','HR-V','Jazz','Legend'],
+  'Hyundai':       ['Elantra','i10','i20','i30','i40','Ioniq','Ioniq 5','Ioniq 6','Kona','Santa Fe','Tucson','ix35'],
+  'Jeep':          ['Cherokee','Compass','Grand Cherokee','Renegade','Wrangler'],
+  'Kia':           ['Ceed','EV6','Niro','Optima','Picanto','ProCeed','Rio','Sorento','Sportage','Stinger','Stonic','XCeed'],
+  'Land Rover':    ['Defender','Discovery','Discovery Sport','Freelander','Range Rover','Range Rover Evoque','Range Rover Sport','Range Rover Velar'],
+  'Lexus':         ['CT','ES','GS','IS','LC','LS','NX','RX','UX'],
+  'Mazda':         ['CX-3','CX-5','CX-7','CX-9','CX-30','CX-60','Mazda2','Mazda3','Mazda6','MX-5'],
+  'Mercedes-Benz': ['Clasa A','Clasa B','Clasa C','Clasa CLA','Clasa CLS','Clasa E','Clasa G','Clasa GL','Clasa GLA','Clasa GLB','Clasa GLC','Clasa GLE','Clasa GLS','Clasa ML','Clasa S','Clasa SL','Clasa SLK','Clasa V','EQA','EQB','EQC','EQE','EQS','Sprinter','Vito'],
+  'Mitsubishi':    ['ASX','Colt','Eclipse Cross','Galant','L200','Lancer','Outlander','Pajero','Space Star'],
+  'Nissan':        ['370Z','GT-R','Juke','Leaf','Micra','Murano','Navara','Pathfinder','Pulsar','Qashqai','X-Trail'],
+  'Opel':          ['Adam','Agila','Ampera','Antara','Astra','Cascada','Corsa','Crossland','Frontera','Grandland','Insignia','Meriva','Mokka','Signum','Vectra','Vivaro','Zafira'],
+  'Peugeot':       ['108','2008','207','208','3008','301','308','408','5008','508','Expert','Partner','Rifter'],
+  'Porsche':       ['718 Boxster','718 Cayman','911','Cayenne','Macan','Panamera','Taycan'],
+  'Renault':       ['Arkana','Captur','Clio','Duster','Espace','Fluence','Kadjar','Koleos','Laguna','Logan','Megane','Modus','Sandero','Scenic','Symbol','Talisman','Twingo','Zoe'],
+  'SEAT':          ['Arona','Ateca','Ibiza','Leon','Mii','Tarraco','Toledo'],
+  'Škoda':         ['Citigo','Enyaq','Fabia','Kamiq','Karoq','Kodiaq','Octavia','Rapid','Scala','Superb','Yeti'],
+  'Subaru':        ['BRZ','Forester','Impreza','Legacy','Outback','XV'],
+  'Suzuki':        ['Alto','Baleno','Grand Vitara','Ignis','Jimny','S-Cross','Swift','SX4','Vitara'],
+  'Tesla':         ['Model 3','Model S','Model X','Model Y','Cybertruck'],
+  'Toyota':        ['Auris','Avensis','Aygo','C-HR','Camry','Corolla','GR Yaris','Hilux','Land Cruiser','Prius','ProAce','RAV4','Supra','Verso','Yaris','Yaris Cross'],
+  'Volkswagen':    ['Amarok','Arteon','Caddy','California','Caravelle','Golf','ID.3','ID.4','ID.5','Jetta','Multivan','Passat','Phaeton','Polo','Scirocco','Sharan','T-Cross','T-Roc','Tiguan','Touareg','Touran','Transporter','Up'],
+  'Volvo':         ['C30','C40','C70','S40','S60','S80','S90','V40','V50','V60','V70','V90','XC40','XC60','XC70','XC90'],
+};
+
+// Populate marca datalist
+const marcaListEl = document.getElementById('marcaList');
+Object.keys(carData).sort().forEach(marca => {
+  const opt = document.createElement('option');
+  opt.value = marca;
+  marcaListEl.appendChild(opt);
+});
+
+// Populate years select (2026 → 1990)
+const fAnEl = document.getElementById('fAn');
+for (let y = 2026; y >= 1990; y--) {
+  const opt = document.createElement('option');
+  opt.value = y;
+  opt.textContent = y;
+  fAnEl.appendChild(opt);
+}
+
 /* ── ELEMENTS ───────────────────────────────────────────── */
 const loginScreen  = document.getElementById('loginScreen');
 const adminScreen  = document.getElementById('adminScreen');
@@ -182,6 +233,7 @@ window.editCar = function(id) {
 
   editIdEl.value      = id;
   fMarca.value        = car.marca        || '';
+  updateModelList(car.marca || '');
   fModel.value        = car.model        || '';
   fAn.value           = car.an           || '';
   fKm.value           = car.km           || '';
@@ -237,6 +289,22 @@ function resetForm() {
   cancelBtn.style.display = 'none';
   formMsg.textContent = '';
 }
+
+/* ── MODEL AUTOCOMPLETE ─────────────────────────────────── */
+const modelListEl = document.getElementById('modelList');
+
+function updateModelList(marca) {
+  modelListEl.innerHTML = '';
+  const models = carData[marca] || [];
+  models.forEach(model => {
+    const opt = document.createElement('option');
+    opt.value = model;
+    modelListEl.appendChild(opt);
+  });
+}
+
+fMarca.addEventListener('input', () => updateModelList(fMarca.value.trim()));
+fMarca.addEventListener('change', () => updateModelList(fMarca.value.trim()));
 
 /* ── IMAGE PREVIEW ──────────────────────────────────────── */
 fImagine.addEventListener('input', () => updateImgPreview(fImagine.value.trim()));
