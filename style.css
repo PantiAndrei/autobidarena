@@ -1347,25 +1347,42 @@ input[type=range]::-webkit-slider-thumb {
   --green-glow: rgba(45,198,83,0.12);
 }
 
-/* Navbar — always visible background in light mode (handles both pages) */
-:root.light #navbar {
-  background: rgba(240,244,251,0.88);
-  backdrop-filter: blur(14px);
-}
+/* Navbar in light mode:
+   index.html — transparent until scroll (hero is dark), links stay white
+   masina.html (.cp-page) — always light bg (no dark hero underneath) */
 :root.light #navbar.scrolled {
   background: rgba(240,244,251,0.97);
   box-shadow: 0 2px 20px rgba(0,0,0,0.1);
 }
+:root.light #navbar.scrolled .nav-link { color: var(--muted); }
+:root.light #navbar.scrolled .nav-link:hover,
+:root.light #navbar.scrolled .nav-link.active { color: var(--text); background: var(--border); }
+:root.light #navbar.scrolled .theme-toggle {
+  background: rgba(13,18,37,0.06);
+  border-color: rgba(13,18,37,0.12);
+  color: var(--text);
+}
+:root.light #navbar.scrolled .theme-toggle:hover { background: rgba(13,18,37,0.12); }
+
+/* Car detail page — always light navbar */
+:root.light .cp-page #navbar {
+  background: rgba(240,244,251,0.92);
+  backdrop-filter: blur(14px);
+}
+:root.light .cp-page #navbar .nav-link { color: var(--muted); }
+:root.light .cp-page #navbar .nav-link:hover,
+:root.light .cp-page #navbar .nav-link.active { color: var(--text); background: var(--border); }
+:root.light .cp-page #navbar .theme-toggle {
+  background: rgba(13,18,37,0.06);
+  border-color: rgba(13,18,37,0.12);
+  color: var(--text);
+}
+:root.light .cp-page #navbar .theme-toggle:hover { background: rgba(13,18,37,0.12); }
 :root.light .nav-links {
   background: rgba(240,244,251,0.98) !important;
 }
-:root.light .theme-toggle {
-  background: rgba(13,18,37,0.06);
-  border-color: rgba(13,18,37,0.12);
-}
-:root.light .theme-toggle:hover { background: rgba(13,18,37,0.12); }
 
-/* Hero — keep white text (dark overlay image stays regardless of theme) */
+/* Hero — keep white text (dark overlay image regardless of theme) */
 :root.light #hero { color: #e8eaf6; }
 :root.light #hero .btn-outline { color: #e8eaf6; border-color: rgba(255,255,255,0.3); }
 :root.light #servicii {
