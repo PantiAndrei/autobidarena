@@ -1382,9 +1382,22 @@ input[type=range]::-webkit-slider-thumb {
   background: rgba(240,244,251,0.98) !important;
 }
 
-/* Hero — keep white text (dark overlay image regardless of theme) */
+/* Hero — keep everything white (dark overlay image regardless of theme) */
 :root.light #hero { color: #e8eaf6; }
 :root.light #hero .btn-outline { color: #e8eaf6; border-color: rgba(255,255,255,0.3); }
+:root.light #hero .stat span { color: rgba(255,255,255,0.6); }
+:root.light #hero .stat-sep { background: rgba(255,255,255,0.2); }
+:root.light #hero .scroll-down { color: rgba(255,255,255,0.45); }
+
+/* Theme toggle visible over dark hero (index.html not scrolled in light mode) */
+:root.light body:not(.cp-page) #navbar:not(.scrolled) .theme-toggle {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.22);
+  color: rgba(255,255,255,0.88);
+}
+:root.light body:not(.cp-page) #navbar:not(.scrolled) .theme-toggle:hover {
+  background: rgba(255,255,255,0.2);
+}
 :root.light #servicii {
   background: linear-gradient(180deg, var(--dark) 0%, #e3eaf7 100%);
 }
