@@ -171,6 +171,17 @@ ul { list-style: none; }
   transition: color .2s, background .2s;
 }
 .nav-link:hover, .nav-link.active { color: var(--text); background: var(--border); }
+
+/* On index.html (no hero on masina), keep links white when navbar is transparent */
+body:not(.cp-page) #navbar:not(.scrolled) .nav-link {
+  color: rgba(255,255,255,0.82);
+}
+body:not(.cp-page) #navbar:not(.scrolled) .nav-link:hover,
+body:not(.cp-page) #navbar:not(.scrolled) .nav-link.active {
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+}
+
 .btn-wa-nav { margin-left: 0.5rem; }
 .nav-toggle {
   display: none;
