@@ -28,6 +28,7 @@ body {
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
+  transition: background-color .3s, color .3s;
 }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
@@ -911,7 +912,13 @@ footer {
 .dotare-tag::before { content: '✓'; color: var(--green); font-weight: 800; font-size: 0.75rem; flex-shrink: 0; }
 
 /* Description */
-.modal-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.8; }
+.modal-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.85;
+  white-space: pre-line;
+  word-break: break-word;
+}
 
 /* Financing */
 .financing-calc {
@@ -1306,4 +1313,82 @@ input[type=range]::-webkit-slider-thumb {
   .calc-row { grid-template-columns: 1fr; }
   .specs-table { grid-template-columns: 1fr 1fr; }
   .dotari-list { grid-template-columns: 1fr; }
+}
+
+/* ── THEME TOGGLE BUTTON ─────────────────────────────── */
+.theme-toggle {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { background: rgba(255,255,255,0.13); }
+.theme-toggle svg { width: 18px; height: 18px; pointer-events: none; }
+.icon-moon { display: block; }
+.icon-sun  { display: none; }
+:root.light .icon-moon { display: none; }
+:root.light .icon-sun  { display: block; }
+
+/* ── LIGHT THEME ─────────────────────────────────────── */
+:root.light {
+  --dark:       #f0f4fb;
+  --card-bg:    #ffffff;
+  --card-hover: #f5f8ff;
+  --text:       #0d1225;
+  --muted:      rgba(13,18,37,0.55);
+  --border:     rgba(13,18,37,0.1);
+  --green-glow: rgba(45,198,83,0.12);
+}
+:root.light #navbar.scrolled {
+  background: rgba(240,244,251,0.97);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+}
+:root.light .nav-links {
+  background: rgba(240,244,251,0.98) !important;
+}
+:root.light .theme-toggle {
+  background: rgba(13,18,37,0.06);
+  border-color: rgba(13,18,37,0.12);
+}
+:root.light .theme-toggle:hover { background: rgba(13,18,37,0.12); }
+:root.light #servicii {
+  background: linear-gradient(180deg, var(--dark) 0%, #e3eaf7 100%);
+}
+:root.light #contact { background: #e5ecf8; }
+:root.light footer {
+  background: #dce4f0;
+}
+:root.light .footer-addr { color: rgba(13,18,37,0.4); }
+:root.light .footer-copy { color: rgba(13,18,37,0.3); }
+:root.light .trust-note { color: rgba(13,18,37,0.65) !important; }
+:root.light .car-spec {
+  background: rgba(13,18,37,0.05);
+  border-color: rgba(13,18,37,0.1);
+  color: rgba(13,18,37,0.6);
+}
+:root.light input[type=range] { background: rgba(13,18,37,0.15); }
+:root.light .financing-calc { background: rgba(13,18,37,0.03); }
+:root.light .cp-breadcrumb { background: #e5ecf8; }
+:root.light .cp-bc-sep { color: rgba(13,18,37,0.3); }
+:root.light .cp-hero {
+  background: linear-gradient(180deg, #dce6f5 0%, var(--dark) 100%);
+}
+:root.light .cp-main-img { background: #d5e0f0; }
+:root.light .car-img-wrap { background: #d5e0f0; }
+:root.light .cp-mobile-bar { background: rgba(240,244,251,0.97); }
+:root.light .cp-cta-section {
+  background: linear-gradient(135deg, #e3eaf7 0%, var(--dark) 100%);
+}
+:root.light .cp-thumbs {
+  scrollbar-color: rgba(13,18,37,0.15) transparent;
+}
+:root.light .car-card:hover {
+  box-shadow: 0 24px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(45,198,83,0.4);
 }

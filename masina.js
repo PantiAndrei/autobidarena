@@ -333,3 +333,9 @@ async function loadCar() {
 }
 
 loadCar();
+
+/* ── THEME TOGGLE ───────────────────────────────────────── */
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const isLight = document.documentElement.classList.toggle('light');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+});
