@@ -927,12 +927,226 @@ input[type=range]::-webkit-slider-thumb {
 .calc-result-amount { font-size: 1.25rem; font-weight: 800; color: var(--green); }
 .calc-disclaimer { font-size: 0.65rem; color: var(--muted); margin-top: 0.65rem; line-height: 1.55; opacity: 0.75; }
 
+/* ── CAR PAGE (masina.html) ──────────────────────────────── */
+.cp-breadcrumb {
+  background: #080c1a;
+  border-bottom: 1px solid var(--border);
+  padding: 0.65rem 0;
+  padding-top: calc(0.65rem + 80px); /* clear fixed navbar */
+}
+.cp-breadcrumb .section-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.cp-breadcrumb a { color: var(--muted); transition: color .2s; }
+.cp-breadcrumb a:hover { color: var(--green); }
+.cp-bc-sep { color: rgba(255,255,255,0.2); }
+
+.cp-loading, .cp-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  min-height: 60vh;
+  color: var(--muted);
+  padding: 3rem;
+  text-align: center;
+}
+.cp-not-found h2 { font-size: 1.6rem; color: var(--text); margin-bottom: 0.5rem; }
+
+/* Hero */
+.cp-hero {
+  background: var(--dark);
+  padding: 2rem 0 3rem;
+}
+.cp-hero-inner {
+  display: grid;
+  grid-template-columns: 58% 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* Gallery */
+.cp-gallery { display: flex; flex-direction: column; gap: 0.6rem; }
+.cp-main-img {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #060a14;
+  aspect-ratio: 16/10;
+}
+.cp-main-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cp-thumbs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.08) transparent;
+}
+.cp-thumbs .modal-thumb { flex-shrink: 0; width: 80px; height: 54px; }
+
+/* Sidebar */
+.cp-sidebar-inner {
+  position: sticky;
+  top: 80px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+}
+.cp-badge-row { margin-bottom: 0.65rem; }
+.cp-badge-type {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  background: rgba(45,198,83,0.1);
+  border: 1px solid rgba(45,198,83,0.25);
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.cp-title {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+}
+.cp-subtitle { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.2rem; }
+.cp-price-wrap {
+  padding: 1rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.2rem;
+}
+.cp-price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.cp-price-cur { font-size: 1.4rem; font-weight: 700; vertical-align: super; margin-right: 2px; }
+.cp-price.comanda { color: var(--green); font-size: 1.5rem; }
+.cp-rate { font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem; }
+
+/* Quick specs */
+.cp-quick-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+.cp-qspec {
+  padding: 0.6rem 0.75rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.cp-qspec-label {
+  font-size: 0.62rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.2rem;
+}
+.cp-qspec-val { font-size: 0.87rem; font-weight: 700; color: var(--text); }
+
+/* CTAs */
+.cp-ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1.1rem; }
+.cp-cta-btn { font-size: 0.85rem !important; padding: 0.75rem 0.75rem !important; }
+
+/* Trust badges */
+.cp-trust {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.cp-trust-item {
+  font-size: 0.78rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.cp-trust-item::before { content: '✔'; color: var(--green); font-weight: 800; }
+
+/* Details tabs section */
+.cp-details {
+  background: #080c1a;
+  padding: 3rem 0 4rem;
+  border-top: 1px solid var(--border);
+}
+.cp-tabs-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  gap: 0;
+  overflow-x: auto;
+}
+.cp-tab {
+  padding: 0.7rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  transition: color .2s, border-color .2s;
+  background: none;
+  border-top: none; border-left: none; border-right: none;
+}
+.cp-tab.active { color: var(--green); border-bottom-color: var(--green); }
+.cp-tab-panel { display: none; }
+.cp-tab-panel.active { display: block; }
+
+/* Bottom CTA */
+.cp-cta-section {
+  background: linear-gradient(135deg, #0a0f20 0%, #080c1a 100%);
+  padding: 4rem 0;
+  border-top: 1px solid var(--border);
+}
+.cp-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.cp-cta-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.35rem;
+}
+.cp-cta-sub { font-size: 0.92rem; color: var(--muted); }
+.cp-cta-btns { display: flex; gap: 0.75rem; flex-shrink: 0; }
+
 /* ── RESPONSIVE ─────────────────────────────────────────── */
 @media (max-width: 900px) {
   .despre-inner { grid-template-columns: 1fr; }
   .badge-circle { margin: 0 auto; }
   .contact-grid { grid-template-columns: 1fr; }
   .contact-map { height: 280px; }
+  /* Car page */
+  .cp-hero-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+  .cp-sidebar-inner { position: static; }
+  .cp-cta-inner { flex-direction: column; text-align: center; }
+  .cp-cta-btns { justify-content: center; }
 }
 
 @media (max-width: 860px) {
