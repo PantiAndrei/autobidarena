@@ -6,12 +6,12 @@
 // TODO: Replace with your Firebase project config
 // Get it from: Firebase Console → Project Settings → Your apps → Config
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyBb9CEf_05bMn179x97lhlr3HI7ZcriG-Q",
+  authDomain:        "autobid-arena.firebaseapp.com",
+  projectId:         "autobid-arena",
+  storageBucket:     "autobid-arena.firebasestorage.app",
+  messagingSenderId: "190958219780",
+  appId:             "1:190958219780:web:9ef785aecb14722e1e3b51"
 };
 
 firebase.initializeApp(firebaseConfig);
