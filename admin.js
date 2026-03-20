@@ -15,8 +15,9 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const db   = firebase.firestore();
-const auth = firebase.auth();
+const db      = firebase.firestore();
+const auth    = firebase.auth();
+const storage = firebase.storage();
 
 /* ── CAR DATA ───────────────────────────────────────────── */
 const carData = {
@@ -95,10 +96,16 @@ const fCombustibil = document.getElementById('fCombustibil');
 const fTransmisie  = document.getElementById('fTransmisie');
 const fCaroserie   = document.getElementById('fCaroserie');
 const fCuloare     = document.getElementById('fCuloare');
-const fImagine     = document.getElementById('fImagine');
 const fDescriere   = document.getElementById('fDescriere');
 const fLaComanda   = document.getElementById('fLaComanda');
-const imgPreview   = document.getElementById('imgPreview');
+const fImaginiInput  = document.getElementById('fImagini');
+const addImgBtn      = document.getElementById('addImgBtn');
+const imgDropZone    = document.getElementById('imgDropZone');
+const imgPreviewGrid = document.getElementById('imgPreviewGrid');
+
+// Image state
+let existingImages = []; // already-saved URLs (when editing)
+let pendingFiles   = []; // new File objects to upload
 
 /* ── AUTH ───────────────────────────────────────────────── */
 auth.onAuthStateChanged(user => {
@@ -150,18 +157,27 @@ function updateSummary(cars) {
   document.getElementById('sumComanda').textContent = cars.filter(c => c.laComanda).length;
 }
 
+function getFirstImage(car) {
+  if (car.imagini && car.imagini.length) return car.imagini[0];
+  return car.imagine || '';
+}
+
 function renderTable(cars) {
   if (!cars.length) {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Niciun anunț. Adaugă prima mașină.</td></tr>';
     return;
   }
 
-  tbody.innerHTML = cars.map(car => `
+  tbody.innerHTML = cars.map(car => {
+    const img = getFirstImage(car);
+    const imgCount = (car.imagini || []).length || (car.imagine ? 1 : 0);
+    return `
     <tr>
       <td class="td-img">
-        <img src="${car.imagine || ''}" alt="${car.marca} ${car.model}"
+        <img src="${img}" alt="${car.marca} ${car.model}"
           onerror="this.style.display='none'"
-          style="${car.imagine ? '' : 'display:none'}" />
+          style="${img ? '' : 'display:none'}" />
+        ${imgCount > 1 ? `<span style="font-size:0.7rem;color:var(--muted);display:block;text-align:center">${imgCount} foto</span>` : ''}
       </td>
       <td><strong>${car.marca} ${car.model}</strong></td>
       <td>${car.an || '—'}</td>
@@ -177,7 +193,8 @@ function renderTable(cars) {
         </div>
       </td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 }
 
 /* ── SAVE CAR ───────────────────────────────────────────── */
@@ -189,25 +206,31 @@ saveBtn.addEventListener('click', async () => {
     return;
   }
 
-  const data = {
-    marca,
-    model,
-    an:          fAn.value          ? parseInt(fAn.value)    : null,
-    km:          fKm.value          ? parseInt(fKm.value)    : null,
-    pret:        fPret.value        ? parseInt(fPret.value)  : null,
-    combustibil: fCombustibil.value || null,
-    transmisie:  fTransmisie.value  || null,
-    caroserie:   fCaroserie.value   || null,
-    culoare:     fCuloare.value.trim()    || null,
-    imagine:     fImagine.value.trim()    || null,
-    descriere:   fDescriere.value.trim()  || null,
-    laComanda:   fLaComanda.checked,
-  };
-
   saveBtn.disabled = true;
-  saveBtn.textContent = 'Se salvează...';
+  saveBtn.textContent = 'Se încarcă imaginile...';
 
   try {
+    // Upload pending files to Firebase Storage
+    const uploadedUrls = await uploadPendingFiles();
+    const allImages = [...existingImages, ...uploadedUrls];
+
+    const data = {
+      marca,
+      model,
+      an:          fAn.value          ? parseInt(fAn.value)    : null,
+      km:          fKm.value          ? parseInt(fKm.value)    : null,
+      pret:        fPret.value        ? parseInt(fPret.value)  : null,
+      combustibil: fCombustibil.value || null,
+      transmisie:  fTransmisie.value  || null,
+      caroserie:   fCaroserie.value   || null,
+      culoare:     fCuloare.value.trim()   || null,
+      descriere:   fDescriere.value.trim() || null,
+      laComanda:   fLaComanda.checked,
+      imagini:     allImages,
+      imagine:     allImages[0] || null, // compat fallback
+    };
+
+    saveBtn.textContent = 'Se salvează...';
     const id = editIdEl.value;
     if (id) {
       await db.collection('masini').doc(id).update(data);
@@ -226,6 +249,18 @@ saveBtn.addEventListener('click', async () => {
   saveBtn.textContent = 'Salvează';
 });
 
+async function uploadPendingFiles() {
+  const urls = [];
+  for (const file of pendingFiles) {
+    const path = `masini/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+    const ref  = storage.ref(path);
+    await ref.put(file);
+    const url = await ref.getDownloadURL();
+    urls.push(url);
+  }
+  return urls;
+}
+
 /* ── EDIT CAR ───────────────────────────────────────────── */
 window.editCar = function(id) {
   const car = allCars.find(c => c.id === id);
@@ -242,11 +277,15 @@ window.editCar = function(id) {
   fTransmisie.value   = car.transmisie   || '';
   fCaroserie.value    = car.caroserie    || '';
   fCuloare.value      = car.culoare      || '';
-  fImagine.value      = car.imagine      || '';
   fDescriere.value    = car.descriere    || '';
   fLaComanda.checked  = car.laComanda    || false;
 
-  updateImgPreview(car.imagine);
+  // Load existing images
+  existingImages = car.imagini && car.imagini.length
+    ? [...car.imagini]
+    : (car.imagine ? [car.imagine] : []);
+  pendingFiles = [];
+  renderImgGrid();
 
   formTitle.textContent = `Editează: ${car.marca} ${car.model}`;
   cancelBtn.style.display = '';
@@ -280,14 +319,15 @@ function resetForm() {
   fTransmisie.value   = '';
   fCaroserie.value    = '';
   fCuloare.value      = '';
-  fImagine.value      = '';
   fDescriere.value    = '';
   fLaComanda.checked  = false;
-  imgPreview.style.display = 'none';
-  imgPreview.src      = '';
-  formTitle.textContent = 'Adaugă Mașină Nouă';
+  existingImages      = [];
+  pendingFiles        = [];
+  fImaginiInput.value = '';
+  renderImgGrid();
+  formTitle.textContent   = 'Adaugă Mașină Nouă';
   cancelBtn.style.display = 'none';
-  formMsg.textContent = '';
+  formMsg.textContent     = '';
 }
 
 /* ── MODEL AUTOCOMPLETE ─────────────────────────────────── */
@@ -306,18 +346,61 @@ function updateModelList(marca) {
 fMarca.addEventListener('input', () => updateModelList(fMarca.value.trim()));
 fMarca.addEventListener('change', () => updateModelList(fMarca.value.trim()));
 
-/* ── IMAGE PREVIEW ──────────────────────────────────────── */
-fImagine.addEventListener('input', () => updateImgPreview(fImagine.value.trim()));
+/* ── IMAGE UPLOAD ───────────────────────────────────────── */
+addImgBtn.addEventListener('click', () => fImaginiInput.click());
+imgDropZone.addEventListener('click', e => { if (e.target === imgDropZone) fImaginiInput.click(); });
 
-function updateImgPreview(url) {
-  if (url) {
-    imgPreview.src = url;
-    imgPreview.style.display = 'block';
-    imgPreview.onerror = () => { imgPreview.style.display = 'none'; };
-  } else {
-    imgPreview.style.display = 'none';
-    imgPreview.src = '';
-  }
+fImaginiInput.addEventListener('change', () => {
+  Array.from(fImaginiInput.files).forEach(file => pendingFiles.push(file));
+  fImaginiInput.value = '';
+  renderImgGrid();
+});
+
+// Drag & drop
+imgDropZone.addEventListener('dragover', e => { e.preventDefault(); imgDropZone.classList.add('drag-over'); });
+imgDropZone.addEventListener('dragleave', () => imgDropZone.classList.remove('drag-over'));
+imgDropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  imgDropZone.classList.remove('drag-over');
+  Array.from(e.dataTransfer.files)
+    .filter(f => f.type.startsWith('image/'))
+    .forEach(f => pendingFiles.push(f));
+  renderImgGrid();
+});
+
+function renderImgGrid() {
+  imgPreviewGrid.innerHTML = '';
+
+  // Existing saved images
+  existingImages.forEach((url, idx) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'img-thumb';
+    thumb.innerHTML = `
+      <img src="${url}" alt="Imagine ${idx + 1}" />
+      <button class="remove-img" title="Șterge" type="button">&times;</button>
+    `;
+    thumb.querySelector('.remove-img').addEventListener('click', () => {
+      existingImages.splice(idx, 1);
+      renderImgGrid();
+    });
+    imgPreviewGrid.appendChild(thumb);
+  });
+
+  // Pending new files
+  pendingFiles.forEach((file, idx) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'img-thumb';
+    const url = URL.createObjectURL(file);
+    thumb.innerHTML = `
+      <img src="${url}" alt="Imagine nouă" />
+      <button class="remove-img" title="Șterge" type="button">&times;</button>
+    `;
+    thumb.querySelector('.remove-img').addEventListener('click', () => {
+      pendingFiles.splice(idx, 1);
+      renderImgGrid();
+    });
+    imgPreviewGrid.appendChild(thumb);
+  });
 }
 
 /* ── HELPERS ────────────────────────────────────────────── */

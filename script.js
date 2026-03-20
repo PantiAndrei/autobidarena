@@ -106,12 +106,14 @@ function renderCars(cars) {
     card.style.transitionDelay = `${(idx % 3) * 0.07}s`;
     card.dataset.caroserie = car.caroserie || '';
 
-    const imgSrc = car.imagine || 'https://via.placeholder.com/600x375/0d1225/2dc653?text=AutoBid+Arena';
+    const imgSrc = (car.imagini && car.imagini[0]) || car.imagine || 'https://via.placeholder.com/600x375/0d1225/2dc653?text=AutoBid+Arena';
+    const imgCount = (car.imagini || []).length;
 
     card.innerHTML = `
       <div class="car-img-wrap">
         <img src="${imgSrc}" alt="${car.marca} ${car.model}" loading="lazy" />
         ${car.laComanda ? '<span class="car-badge-comanda">La Comandă</span>' : ''}
+        ${imgCount > 1 ? `<span class="car-img-count">📷 ${imgCount}</span>` : ''}
       </div>
       <div class="car-body">
         <h3 class="car-title">${car.marca} ${car.model}${car.an ? ' ' + car.an : ''}</h3>
@@ -180,9 +182,18 @@ const modal      = document.getElementById('carModal');
 const modalClose = document.getElementById('modalClose');
 const modalBackd = modal.querySelector('.modal-backdrop');
 
+let sliderImages = [];
+let sliderIdx    = 0;
+
 function openModal(car) {
-  document.getElementById('modalImg').src   = car.imagine || 'https://via.placeholder.com/700x394/0d1225/2dc653?text=AutoBid+Arena';
-  document.getElementById('modalImg').alt   = `${car.marca} ${car.model}`;
+  // Build images array
+  sliderImages = (car.imagini && car.imagini.length)
+    ? car.imagini
+    : (car.imagine ? [car.imagine] : ['https://via.placeholder.com/700x394/0d1225/2dc653?text=AutoBid+Arena']);
+  sliderIdx = 0;
+
+  renderSlider();
+
   document.getElementById('modalTitle').textContent = `${car.marca} ${car.model}${car.an ? ' · ' + car.an : ''}`;
 
   const specs = [
@@ -209,6 +220,36 @@ function openModal(car) {
   document.body.style.overflow = 'hidden';
 }
 
+function renderSlider() {
+  const wrap = document.getElementById('modalImgWrap');
+  const total = sliderImages.length;
+
+  wrap.innerHTML = `
+    <img id="modalImg" src="${sliderImages[sliderIdx]}" alt="Imagine ${sliderIdx + 1}" />
+    ${total > 1 ? `
+      <button class="slider-btn slider-prev" id="sliderPrev">&#8249;</button>
+      <button class="slider-btn slider-next" id="sliderNext">&#8250;</button>
+      <div class="slider-dots">
+        ${sliderImages.map((_, i) => `<span class="slider-dot ${i === sliderIdx ? 'active' : ''}" data-i="${i}"></span>`).join('')}
+      </div>
+      <span class="slider-count">${sliderIdx + 1} / ${total}</span>
+    ` : ''}
+  `;
+
+  if (total > 1) {
+    document.getElementById('sliderPrev').addEventListener('click', e => { e.stopPropagation(); sliderMove(-1); });
+    document.getElementById('sliderNext').addEventListener('click', e => { e.stopPropagation(); sliderMove(1); });
+    wrap.querySelectorAll('.slider-dot').forEach(dot => {
+      dot.addEventListener('click', e => { e.stopPropagation(); sliderIdx = parseInt(dot.dataset.i); renderSlider(); });
+    });
+  }
+}
+
+function sliderMove(dir) {
+  sliderIdx = (sliderIdx + dir + sliderImages.length) % sliderImages.length;
+  renderSlider();
+}
+
 function closeModal() {
   modal.classList.remove('open');
   document.body.style.overflow = '';
@@ -216,4 +257,8 @@ function closeModal() {
 
 modalClose.addEventListener('click', closeModal);
 modalBackd.addEventListener('click', closeModal);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowLeft'  && modal.classList.contains('open')) sliderMove(-1);
+  if (e.key === 'ArrowRight' && modal.classList.contains('open')) sliderMove(1);
+});
