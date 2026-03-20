@@ -1378,8 +1378,11 @@ input[type=range]::-webkit-slider-thumb {
   color: var(--text);
 }
 :root.light .cp-page #navbar .theme-toggle:hover { background: rgba(13,18,37,0.12); }
-:root.light .nav-links {
-  background: rgba(240,244,251,0.98) !important;
+/* Mobile drawer only — desktop nav-links must stay transparent */
+@media (max-width: 768px) {
+  :root.light .nav-links {
+    background: rgba(240,244,251,0.98) !important;
+  }
 }
 
 /* Hero — keep everything white (dark overlay image regardless of theme) */
