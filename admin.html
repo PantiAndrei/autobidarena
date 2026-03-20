@@ -200,9 +200,44 @@
       font-size: 0.7rem; color: #fff;
     }
 
+    /* DOTARI */
+    .dotari-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .dotari-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .dotari-group-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--green);
+      margin-bottom: 0.3rem;
+    }
+    .dotare-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .dotare-item input[type=checkbox] {
+      width: 15px; height: 15px;
+      accent-color: var(--green);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
     @media (max-width: 600px) {
       .form-grid { grid-template-columns: 1fr; }
       .summary-cards { grid-template-columns: repeat(2, 1fr); }
+      .dotari-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -324,8 +359,123 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="fCuloare">Culoare</label>
+            <label for="fCuloare">Culoare exterior</label>
             <input type="text" id="fCuloare" placeholder="Negru metalizat" />
+          </div>
+          <div class="form-group">
+            <label for="fCp">Putere (CP)</label>
+            <input type="number" id="fCp" placeholder="150" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="fCilindree">Cilindree (cm³)</label>
+            <input type="number" id="fCilindree" placeholder="1998" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="fNrUsi">Număr uși</label>
+            <select id="fNrUsi">
+              <option value="">— Selectează —</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fLocuri">Locuri</label>
+            <select id="fLocuri">
+              <option value="">— Selectează —</option>
+              <option>2</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fCuloareInterior">Culoare interior</label>
+            <input type="text" id="fCuloareInterior" placeholder="Negru" />
+          </div>
+          <div class="form-group">
+            <label for="fMaterialInterior">Material interior</label>
+            <select id="fMaterialInterior">
+              <option value="">— Selectează —</option>
+              <option>Textil</option>
+              <option>Piele</option>
+              <option>Piele parțială</option>
+              <option>Alcantara</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fNormaPoluare">Normă poluare</label>
+            <select id="fNormaPoluare">
+              <option value="">— Selectează —</option>
+              <option>Euro 3</option>
+              <option>Euro 4</option>
+              <option>Euro 5</option>
+              <option>Euro 6</option>
+              <option>Euro 6d</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Dotări / Echipamente</label>
+            <div class="dotari-grid" id="dotariGrid">
+              <!-- Confort -->
+              <div class="dotari-group">
+                <div class="dotari-group-title">Confort</div>
+                <label class="dotare-item"><input type="checkbox" value="Aer condiționat" /> Aer condiționat</label>
+                <label class="dotare-item"><input type="checkbox" value="Climatronic" /> Climatronic</label>
+                <label class="dotare-item"><input type="checkbox" value="Scaune încălzite față" /> Scaune încălzite față</label>
+                <label class="dotare-item"><input type="checkbox" value="Scaune încălzite spate" /> Scaune încălzite spate</label>
+                <label class="dotare-item"><input type="checkbox" value="Volan încălzit" /> Volan încălzit</label>
+                <label class="dotare-item"><input type="checkbox" value="Scaune electrice" /> Scaune electrice</label>
+                <label class="dotare-item"><input type="checkbox" value="Tapițerie piele" /> Tapițerie piele</label>
+                <label class="dotare-item"><input type="checkbox" value="Trapă electrică" /> Trapă electrică</label>
+                <label class="dotare-item"><input type="checkbox" value="Cotieră față" /> Cotieră față</label>
+                <label class="dotare-item"><input type="checkbox" value="Geamuri electrice" /> Geamuri electrice</label>
+                <label class="dotare-item"><input type="checkbox" value="Oglinzi electrice" /> Oglinzi electrice</label>
+              </div>
+              <!-- Tehnologie -->
+              <div class="dotari-group">
+                <div class="dotari-group-title">Tehnologie</div>
+                <label class="dotare-item"><input type="checkbox" value="Navigație GPS" /> Navigație GPS</label>
+                <label class="dotare-item"><input type="checkbox" value="Apple CarPlay" /> Apple CarPlay</label>
+                <label class="dotare-item"><input type="checkbox" value="Android Auto" /> Android Auto</label>
+                <label class="dotare-item"><input type="checkbox" value="Bluetooth" /> Bluetooth</label>
+                <label class="dotare-item"><input type="checkbox" value="Sistem audio premium" /> Sistem audio premium</label>
+                <label class="dotare-item"><input type="checkbox" value="Keyless Entry" /> Keyless Entry</label>
+                <label class="dotare-item"><input type="checkbox" value="Start/Stop buton" /> Start/Stop buton</label>
+                <label class="dotare-item"><input type="checkbox" value="Head-Up Display" /> Head-Up Display</label>
+                <label class="dotare-item"><input type="checkbox" value="Afișaj digital tablou bord" /> Afișaj digital tablou bord</label>
+              </div>
+              <!-- Siguranță -->
+              <div class="dotari-group">
+                <div class="dotari-group-title">Siguranță & Asistență</div>
+                <label class="dotare-item"><input type="checkbox" value="Senzori parcare față" /> Senzori parcare față</label>
+                <label class="dotare-item"><input type="checkbox" value="Senzori parcare spate" /> Senzori parcare spate</label>
+                <label class="dotare-item"><input type="checkbox" value="Cameră marsarier" /> Cameră marsarier</label>
+                <label class="dotare-item"><input type="checkbox" value="Cameră 360°" /> Cameră 360°</label>
+                <label class="dotare-item"><input type="checkbox" value="Cruise control" /> Cruise control</label>
+                <label class="dotare-item"><input type="checkbox" value="Cruise control adaptiv" /> Cruise control adaptiv</label>
+                <label class="dotare-item"><input type="checkbox" value="Lane Assist" /> Lane Assist</label>
+                <label class="dotare-item"><input type="checkbox" value="Park Assist" /> Park Assist</label>
+                <label class="dotare-item"><input type="checkbox" value="Frânare automată urgență" /> Frânare automată urgență</label>
+                <label class="dotare-item"><input type="checkbox" value="Unghi mort avertizare" /> Unghi mort avertizare</label>
+              </div>
+              <!-- Exterior -->
+              <div class="dotari-group">
+                <div class="dotari-group-title">Exterior & Motor</div>
+                <label class="dotare-item"><input type="checkbox" value="Faruri LED" /> Faruri LED</label>
+                <label class="dotare-item"><input type="checkbox" value="Faruri Xenon" /> Faruri Xenon</label>
+                <label class="dotare-item"><input type="checkbox" value="Jante aliaj" /> Jante aliaj</label>
+                <label class="dotare-item"><input type="checkbox" value="Tracțiune integrală 4x4" /> Tracțiune integrală 4x4</label>
+                <label class="dotare-item"><input type="checkbox" value="Diferențial blocat" /> Diferențial blocat</label>
+                <label class="dotare-item"><input type="checkbox" value="Suspensie sport" /> Suspensie sport</label>
+                <label class="dotare-item"><input type="checkbox" value="Suspensie pneumatică" /> Suspensie pneumatică</label>
+                <label class="dotare-item"><input type="checkbox" value="Bara sport" /> Bara sport</label>
+                <label class="dotare-item"><input type="checkbox" value="Pachet sport" /> Pachet sport</label>
+              </div>
+            </div>
           </div>
           <div class="form-group full">
             <label>Imagini mașină</label>

@@ -226,22 +226,102 @@
     <div class="modal-backdrop"></div>
     <div class="modal-box">
       <button class="modal-close" id="modalClose" aria-label="Închide">&times;</button>
-      <div class="modal-img-wrap" id="modalImgWrap">
-        <img id="modalImg" src="" alt="" />
+
+      <!-- Gallery -->
+      <div class="modal-gallery">
+        <div class="modal-main-img-wrap" id="modalImgWrap">
+          <!-- slider injected by JS -->
+        </div>
+        <div class="modal-thumbs" id="modalThumbs"></div>
       </div>
-      <div class="modal-body">
-        <h2 id="modalTitle"></h2>
-        <div id="modalSpecs" class="modal-specs"></div>
-        <p id="modalDesc" class="modal-desc"></p>
-        <div class="modal-price-row">
-          <span id="modalPrice" class="modal-price"></span>
+
+      <!-- Content -->
+      <div class="modal-content">
+
+        <!-- Header: title + price -->
+        <div class="modal-header">
+          <div class="modal-title-block">
+            <h2 id="modalTitle"></h2>
+            <div id="modalSubtitle" class="modal-subtitle"></div>
+          </div>
+          <div class="modal-price-block">
+            <div id="modalPrice" class="modal-price"></div>
+            <div id="modalRate" class="modal-rate"></div>
+          </div>
+        </div>
+
+        <!-- CTA buttons -->
+        <div class="modal-ctas">
+          <a href="tel:+40725762915" class="btn-phone">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.45 2.33.69 3.58.69a1 1 0 011 1V20a1 1 0 01-1 1C9.61 21 3 14.39 3 6a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.24 2.45.69 3.58a1 1 0 01-.25 1.01l-2.32 2.2z"/></svg>
+            Sună acum
+          </a>
           <a id="modalWA" href="#" target="_blank" class="btn-wa-big">
             <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.122 1.532 5.856L.073 23.927l6.244-1.638A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.213-3.706.972.988-3.61-.234-.37A9.818 9.818 0 1 1 12 21.818z"/></svg>
-            Contactează pe WhatsApp
+            WhatsApp
           </a>
         </div>
-      </div>
-    </div>
+
+        <!-- Tabs -->
+        <div class="modal-tabs">
+          <button class="modal-tab active" data-tab="specs">Specificații</button>
+          <button class="modal-tab" data-tab="dotari">Dotări</button>
+          <button class="modal-tab" data-tab="finantare">Finanțare</button>
+          <button class="modal-tab" data-tab="descriere">Descriere</button>
+        </div>
+
+        <!-- Tab: Specs -->
+        <div class="modal-tab-panel active" id="tabSpecs">
+          <div class="specs-table" id="modalSpecsTable"></div>
+        </div>
+
+        <!-- Tab: Dotari -->
+        <div class="modal-tab-panel" id="tabDotari">
+          <div class="dotari-list" id="modalDotariList"></div>
+          <p id="modalDotariEmpty" style="color:var(--muted);font-size:0.9rem;display:none">
+            Nu au fost specificate dotări pentru această mașină.
+          </p>
+        </div>
+
+        <!-- Tab: Finantare -->
+        <div class="modal-tab-panel" id="tabFinantare">
+          <div class="financing-calc">
+            <h4>Calculator finanțare orientativ</h4>
+            <div class="calc-row">
+              <div class="calc-group">
+                <span class="calc-label">Avans</span>
+                <input type="range" id="calcAvans" min="0" max="80" value="20" step="5" />
+                <span class="calc-value" id="calcAvansVal">20% — € <span id="calcAvansEur">0</span></span>
+              </div>
+              <div class="calc-group">
+                <span class="calc-label">Perioadă (luni)</span>
+                <input type="range" id="calcPeriod" min="12" max="96" value="60" step="12" />
+                <span class="calc-value" id="calcPeriodVal">60 luni</span>
+              </div>
+            </div>
+            <div class="calc-result">
+              <div>
+                <div class="calc-result-label">Rată lunară estimată</div>
+                <div class="calc-result-amount" id="calcRate">— € / lună</div>
+              </div>
+              <div style="text-align:right">
+                <div class="calc-result-label">Sumă finanțată</div>
+                <div style="font-weight:700;color:var(--text)" id="calcFinantat">—</div>
+              </div>
+            </div>
+            <p class="calc-disclaimer">
+              * Calcul orientativ, dobândă estimată 7.9% / an. Suma reală poate varia în funcție de instituția financiară, scorul de credit și condițiile contractuale. Contactați-ne pentru o ofertă personalizată.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tab: Descriere -->
+        <div class="modal-tab-panel" id="tabDescriere">
+          <p id="modalDesc" class="modal-desc"></p>
+        </div>
+
+      </div><!-- /modal-content -->
+    </div><!-- /modal-box -->
   </div>
 
   <!-- Firebase SDK (compat) -->

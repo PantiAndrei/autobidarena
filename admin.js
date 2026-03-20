@@ -87,17 +87,35 @@ const formMsg   = document.getElementById('formMsg');
 const editIdEl  = document.getElementById('editId');
 const tbody     = document.getElementById('carsTableBody');
 
-const fMarca       = document.getElementById('fMarca');
-const fModel       = document.getElementById('fModel');
-const fAn          = document.getElementById('fAn');
-const fKm          = document.getElementById('fKm');
-const fPret        = document.getElementById('fPret');
-const fCombustibil = document.getElementById('fCombustibil');
-const fTransmisie  = document.getElementById('fTransmisie');
-const fCaroserie   = document.getElementById('fCaroserie');
-const fCuloare     = document.getElementById('fCuloare');
-const fDescriere   = document.getElementById('fDescriere');
-const fLaComanda   = document.getElementById('fLaComanda');
+const fMarca           = document.getElementById('fMarca');
+const fModel           = document.getElementById('fModel');
+const fAn              = document.getElementById('fAn');
+const fKm              = document.getElementById('fKm');
+const fPret            = document.getElementById('fPret');
+const fCombustibil     = document.getElementById('fCombustibil');
+const fTransmisie      = document.getElementById('fTransmisie');
+const fCaroserie       = document.getElementById('fCaroserie');
+const fCuloare         = document.getElementById('fCuloare');
+const fCp              = document.getElementById('fCp');
+const fCilindree       = document.getElementById('fCilindree');
+const fNrUsi           = document.getElementById('fNrUsi');
+const fLocuri          = document.getElementById('fLocuri');
+const fCuloareInterior = document.getElementById('fCuloareInterior');
+const fMaterialInterior= document.getElementById('fMaterialInterior');
+const fNormaPoluare    = document.getElementById('fNormaPoluare');
+const fDescriere       = document.getElementById('fDescriere');
+const fLaComanda       = document.getElementById('fLaComanda');
+
+function getDotariChecked() {
+  return Array.from(document.querySelectorAll('#dotariGrid input[type=checkbox]:checked'))
+    .map(cb => cb.value);
+}
+
+function setDotariChecked(dotari = []) {
+  document.querySelectorAll('#dotariGrid input[type=checkbox]').forEach(cb => {
+    cb.checked = dotari.includes(cb.value);
+  });
+}
 const fImaginiInput  = document.getElementById('fImagini');
 const addImgBtn      = document.getElementById('addImgBtn');
 const imgDropZone    = document.getElementById('imgDropZone');
@@ -217,17 +235,25 @@ saveBtn.addEventListener('click', async () => {
     const data = {
       marca,
       model,
-      an:          fAn.value          ? parseInt(fAn.value)    : null,
-      km:          fKm.value          ? parseInt(fKm.value)    : null,
-      pret:        fPret.value        ? parseInt(fPret.value)  : null,
-      combustibil: fCombustibil.value || null,
-      transmisie:  fTransmisie.value  || null,
-      caroserie:   fCaroserie.value   || null,
-      culoare:     fCuloare.value.trim()   || null,
-      descriere:   fDescriere.value.trim() || null,
-      laComanda:   fLaComanda.checked,
-      imagini:     allImages,
-      imagine:     allImages[0] || null, // compat fallback
+      an:              fAn.value          ? parseInt(fAn.value)       : null,
+      km:              fKm.value          ? parseInt(fKm.value)       : null,
+      pret:            fPret.value        ? parseInt(fPret.value)     : null,
+      combustibil:     fCombustibil.value     || null,
+      transmisie:      fTransmisie.value      || null,
+      caroserie:       fCaroserie.value       || null,
+      culoare:         fCuloare.value.trim()  || null,
+      cp:              fCp.value          ? parseInt(fCp.value)       : null,
+      cilindree:       fCilindree.value   ? parseInt(fCilindree.value): null,
+      numarUsi:        fNrUsi.value           || null,
+      locuri:          fLocuri.value          || null,
+      culoareInterior: fCuloareInterior.value.trim() || null,
+      material:        fMaterialInterior.value || null,
+      normaPoluare:    fNormaPoluare.value     || null,
+      dotari:          getDotariChecked(),
+      descriere:       fDescriere.value.trim() || null,
+      laComanda:       fLaComanda.checked,
+      imagini:         allImages,
+      imagine:         allImages[0] || null,
     };
 
     saveBtn.textContent = 'Se salvează...';
@@ -266,19 +292,27 @@ window.editCar = function(id) {
   const car = allCars.find(c => c.id === id);
   if (!car) return;
 
-  editIdEl.value      = id;
-  fMarca.value        = car.marca        || '';
+  editIdEl.value          = id;
+  fMarca.value            = car.marca           || '';
   updateModelList(car.marca || '');
-  fModel.value        = car.model        || '';
-  fAn.value           = car.an           || '';
-  fKm.value           = car.km           || '';
-  fPret.value         = car.pret         || '';
-  fCombustibil.value  = car.combustibil  || '';
-  fTransmisie.value   = car.transmisie   || '';
-  fCaroserie.value    = car.caroserie    || '';
-  fCuloare.value      = car.culoare      || '';
-  fDescriere.value    = car.descriere    || '';
-  fLaComanda.checked  = car.laComanda    || false;
+  fModel.value            = car.model           || '';
+  fAn.value               = car.an              || '';
+  fKm.value               = car.km              || '';
+  fPret.value             = car.pret            || '';
+  fCombustibil.value      = car.combustibil     || '';
+  fTransmisie.value       = car.transmisie      || '';
+  fCaroserie.value        = car.caroserie       || '';
+  fCuloare.value          = car.culoare         || '';
+  fCp.value               = car.cp             || '';
+  fCilindree.value        = car.cilindree       || '';
+  fNrUsi.value            = car.numarUsi        || '';
+  fLocuri.value           = car.locuri          || '';
+  fCuloareInterior.value  = car.culoareInterior || '';
+  fMaterialInterior.value = car.material        || '';
+  fNormaPoluare.value     = car.normaPoluare    || '';
+  setDotariChecked(car.dotari || []);
+  fDescriere.value        = car.descriere       || '';
+  fLaComanda.checked      = car.laComanda       || false;
 
   // Load existing images
   existingImages = car.imagini && car.imagini.length
@@ -309,18 +343,26 @@ window.deleteCar = async function(id, name) {
 cancelBtn.addEventListener('click', resetForm);
 
 function resetForm() {
-  editIdEl.value      = '';
-  fMarca.value        = '';
-  fModel.value        = '';
-  fAn.value           = '';
-  fKm.value           = '';
-  fPret.value         = '';
-  fCombustibil.value  = '';
-  fTransmisie.value   = '';
-  fCaroserie.value    = '';
-  fCuloare.value      = '';
-  fDescriere.value    = '';
-  fLaComanda.checked  = false;
+  editIdEl.value          = '';
+  fMarca.value            = '';
+  fModel.value            = '';
+  fAn.value               = '';
+  fKm.value               = '';
+  fPret.value             = '';
+  fCombustibil.value      = '';
+  fTransmisie.value       = '';
+  fCaroserie.value        = '';
+  fCuloare.value          = '';
+  fCp.value               = '';
+  fCilindree.value        = '';
+  fNrUsi.value            = '';
+  fLocuri.value           = '';
+  fCuloareInterior.value  = '';
+  fMaterialInterior.value = '';
+  fNormaPoluare.value     = '';
+  setDotariChecked([]);
+  fDescriere.value        = '';
+  fLaComanda.checked      = false;
   existingImages      = [];
   pendingFiles        = [];
   fImaginiInput.value = '';
