@@ -1410,6 +1410,9 @@ input[type=range]::-webkit-slider-thumb {
   /* Bottom CTA buttons stack vertically so they don't overflow */
   .cp-cta-btns { flex-direction: column; flex-shrink: 1; width: 100%; }
   .cp-cta-btns > a { justify-content: center; white-space: normal; text-align: center; }
+  /* Tabs 2×2 grid on narrow phones — prevents horizontal scroll */
+  .cp-tabs-nav { flex-wrap: wrap; overflow-x: visible; }
+  .cp-tab { flex: 0 0 calc(50% - 2px); text-align: center; }
 }
 
 /* ── THEME TOGGLE BUTTON ─────────────────────────────── */
