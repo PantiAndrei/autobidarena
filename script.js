@@ -129,24 +129,6 @@ function renderCars(cars) {
     const imgCount = (car.imagini || []).length;
     const rate = calcMonthlyRate(car.pret, 20, 60);
 
-    /* Price block */
-    let priceHtml;
-    if (car.laComanda)  priceHtml = `<div class="car-price-main comanda">La Coman&#x103;</div>`;
-    else if (!car.pret) priceHtml = `<div class="car-price-main comanda">Pre&#x21B; la cerere</div>`;
-    else                priceHtml = `<div class="car-price-main">&euro;&nbsp;${Number(car.pret).toLocaleString('ro-RO')}</div>`;
-
-    /* Specs grid items */
-    const specs = [
-      car.an          && `<div class="car-spec-item">${ICO.an}<span>${car.an}</span></div>`,
-      car.km          && `<div class="car-spec-item">${ICO.km}<span>${Number(car.km).toLocaleString('ro-RO')} km</span></div>`,
-      car.combustibil && `<div class="car-spec-item">${ICO.fuel}<span>${car.combustibil}</span></div>`,
-      car.transmisie  && `<div class="car-spec-item">${ICO.gear}<span>${car.transmisie}</span></div>`,
-      car.cp          && `<div class="car-spec-item">${ICO.cp}<span>${car.cp} CP</span></div>`,
-    ].filter(Boolean).join('');
-
-    /* Subtitle line (caroserie · normă) */
-    const subtitle = [car.caroserie, car.normaPoluare].filter(Boolean).join(' · ');
-
     /* Horizontal specs */
     const specBar = [
       car.km          ? `<span>${Number(car.km).toLocaleString('ro-RO')} km</span>` : '',
