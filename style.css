@@ -1077,11 +1077,13 @@ input[type=range]::-webkit-slider-thumb {
   text-transform: uppercase;
 }
 .cp-title {
-  font-size: 1.85rem;
+  font-size: clamp(1.35rem, 4vw, 1.85rem);
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.02em;
   margin-bottom: 0.3rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .cp-subtitle {
   font-size: 0.8rem;
@@ -1100,7 +1102,7 @@ input[type=range]::-webkit-slider-thumb {
   margin-bottom: 1.1rem;
 }
 .cp-price {
-  font-size: 2.4rem;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
   font-weight: 800;
   color: var(--accent);
   line-height: 1;
@@ -1256,9 +1258,10 @@ input[type=range]::-webkit-slider-thumb {
 }
 .cp-cta-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.2rem;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
   letter-spacing: 0.04em;
   margin-bottom: 0.35rem;
+  word-break: break-word;
 }
 .cp-cta-sub { font-size: 0.92rem; color: var(--muted); }
 .cp-cta-btns { display: flex; gap: 0.75rem; flex-shrink: 0; }
@@ -1277,18 +1280,24 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 @media (max-width: 768px) {
-  /* Show mobile CTA bar */
   .cp-mobile-bar { display: flex; }
-  /* Add bottom padding so content isn't hidden under bar */
   .cp-cta-section { padding-bottom: calc(4rem + 72px); }
-  /* Make main image square-ish on mobile */
-  .cp-main-img { aspect-ratio: 4/3; }
-  /* Breadcrumb smaller */
+  .cp-main-img { aspect-ratio: 16/9; }
   .cp-breadcrumb { padding-top: calc(0.5rem + 68px); }
-  /* Quick specs: 4 items in 2 cols */
-  .cp-price { font-size: 2rem; }
-  /* Hide desktop CTA in sidebar on mobile, mobile bar takes over */
   .cp-ctas { display: none; }
+  .cp-hero { padding: 1.2rem 0 2rem; }
+  .cp-details { padding: 1.5rem 0 3rem; }
+  .cp-sidebar-inner { padding: 1rem; }
+  .cp-qspec-label { font-size: 0.68rem; }
+}
+
+@media (max-width: 480px) {
+  .cp-quick-specs { grid-template-columns: 1fr; }
+  .cp-qspec { border-right: none; border-bottom: 1px solid var(--border); }
+  .cp-qspec:last-child { border-bottom: none; }
+  .cp-mobile-bar > a { font-size: 0.92rem; }
+  .cp-hero { padding: 0.8rem 0 1.5rem; }
+  .cp-breadcrumb a, .cp-breadcrumb span { font-size: 0.72rem; }
 }
 
 @media (max-width: 860px) {

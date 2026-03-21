@@ -121,9 +121,10 @@ const addImgBtn      = document.getElementById('addImgBtn');
 const imgDropZone    = document.getElementById('imgDropZone');
 const imgPreviewGrid = document.getElementById('imgPreviewGrid');
 
-// Image state
-let existingImages = []; // already-saved URLs (when editing)
-let pendingFiles   = []; // new File objects to upload
+// Image state — unified ordered list for drag-to-reorder
+// Each item: {type:'existing', url} or {type:'pending', file}
+let imageItems = [];
+let dragSrcIdx = null;
 
 /* ── AUTH ───────────────────────────────────────────────── */
 auth.onAuthStateChanged(user => {
@@ -230,7 +231,11 @@ saveBtn.addEventListener('click', async () => {
   try {
     // Upload pending files to Firebase Storage
     const uploadedUrls = await uploadPendingFiles();
-    const allImages = [...existingImages, ...uploadedUrls];
+    // Build final ordered array respecting drag order
+    let pendingIdx = 0;
+    const allImages = imageItems.map(item =>
+      item.type === 'existing' ? item.url : uploadedUrls[pendingIdx++]
+    ).filter(Boolean);
 
     const data = {
       marca,
@@ -277,10 +282,10 @@ saveBtn.addEventListener('click', async () => {
 
 async function uploadPendingFiles() {
   const urls = [];
-  for (const file of pendingFiles) {
-    const path = `masini/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+  for (const item of imageItems.filter(i => i.type === 'pending')) {
+    const path = `masini/${Date.now()}_${item.file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
     const ref  = storage.ref(path);
-    await ref.put(file);
+    await ref.put(item.file);
     const url = await ref.getDownloadURL();
     urls.push(url);
   }
@@ -315,10 +320,10 @@ window.editCar = function(id) {
   fLaComanda.checked      = car.laComanda       || false;
 
   // Load existing images
-  existingImages = car.imagini && car.imagini.length
+  const urls = car.imagini && car.imagini.length
     ? [...car.imagini]
     : (car.imagine ? [car.imagine] : []);
-  pendingFiles = [];
+  imageItems = urls.map(url => ({ type: 'existing', url }));
   renderImgGrid();
 
   formTitle.textContent = `Editează: ${car.marca} ${car.model}`;
@@ -363,8 +368,7 @@ function resetForm() {
   setDotariChecked([]);
   fDescriere.value        = '';
   fLaComanda.checked      = false;
-  existingImages      = [];
-  pendingFiles        = [];
+  imageItems          = [];
   fImaginiInput.value = '';
   renderImgGrid();
   formTitle.textContent   = 'Adaugă Mașină Nouă';
@@ -393,12 +397,12 @@ addImgBtn.addEventListener('click', () => fImaginiInput.click());
 imgDropZone.addEventListener('click', e => { if (e.target === imgDropZone) fImaginiInput.click(); });
 
 fImaginiInput.addEventListener('change', () => {
-  Array.from(fImaginiInput.files).forEach(file => pendingFiles.push(file));
+  Array.from(fImaginiInput.files).forEach(file => imageItems.push({ type: 'pending', file }));
   fImaginiInput.value = '';
   renderImgGrid();
 });
 
-// Drag & drop
+// Drag & drop files onto zone
 imgDropZone.addEventListener('dragover', e => { e.preventDefault(); imgDropZone.classList.add('drag-over'); });
 imgDropZone.addEventListener('dragleave', () => imgDropZone.classList.remove('drag-over'));
 imgDropZone.addEventListener('drop', e => {
@@ -406,41 +410,46 @@ imgDropZone.addEventListener('drop', e => {
   imgDropZone.classList.remove('drag-over');
   Array.from(e.dataTransfer.files)
     .filter(f => f.type.startsWith('image/'))
-    .forEach(f => pendingFiles.push(f));
+    .forEach(f => imageItems.push({ type: 'pending', file: f }));
   renderImgGrid();
 });
 
 function renderImgGrid() {
   imgPreviewGrid.innerHTML = '';
 
-  // Existing saved images
-  existingImages.forEach((url, idx) => {
+  imageItems.forEach((item, idx) => {
     const thumb = document.createElement('div');
     thumb.className = 'img-thumb';
-    thumb.innerHTML = `
-      <img src="${url}" alt="Imagine ${idx + 1}" />
-      <button class="remove-img" title="Șterge" type="button">&times;</button>
-    `;
-    thumb.querySelector('.remove-img').addEventListener('click', () => {
-      existingImages.splice(idx, 1);
-      renderImgGrid();
-    });
-    imgPreviewGrid.appendChild(thumb);
-  });
+    thumb.draggable = true;
+    if (idx === 0) thumb.classList.add('img-thumb-first');
 
-  // Pending new files
-  pendingFiles.forEach((file, idx) => {
-    const thumb = document.createElement('div');
-    thumb.className = 'img-thumb';
-    const url = URL.createObjectURL(file);
+    const src = item.type === 'existing' ? item.url : URL.createObjectURL(item.file);
     thumb.innerHTML = `
-      <img src="${url}" alt="Imagine nouă" />
+      ${idx === 0 ? '<span class="img-thumb-label">Coperta</span>' : ''}
+      <img src="${src}" alt="Imagine ${idx + 1}" />
       <button class="remove-img" title="Șterge" type="button">&times;</button>
     `;
     thumb.querySelector('.remove-img').addEventListener('click', () => {
-      pendingFiles.splice(idx, 1);
+      imageItems.splice(idx, 1);
       renderImgGrid();
     });
+
+    // Drag-to-reorder events
+    thumb.addEventListener('dragstart', () => { dragSrcIdx = idx; thumb.classList.add('dragging'); });
+    thumb.addEventListener('dragend',   () => { dragSrcIdx = null; thumb.classList.remove('dragging'); renderImgGrid(); });
+    thumb.addEventListener('dragover',  e => { e.preventDefault(); thumb.classList.add('drag-over-thumb'); });
+    thumb.addEventListener('dragleave', () => thumb.classList.remove('drag-over-thumb'));
+    thumb.addEventListener('drop', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      thumb.classList.remove('drag-over-thumb');
+      if (dragSrcIdx === null || dragSrcIdx === idx) return;
+      const moved = imageItems.splice(dragSrcIdx, 1)[0];
+      imageItems.splice(idx, 0, moved);
+      dragSrcIdx = null;
+      renderImgGrid();
+    });
+
     imgPreviewGrid.appendChild(thumb);
   });
 }
