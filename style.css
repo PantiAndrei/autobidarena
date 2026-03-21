@@ -21,7 +21,7 @@
 
 /* ── RESET ──────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; overflow-x: hidden; overscroll-behavior-x: none; }
+html { scroll-behavior: smooth; overflow-x: clip; overscroll-behavior-x: none; }
 body {
   font-family: 'Inter', sans-serif;
   background: var(--dark);
@@ -1514,20 +1514,20 @@ input[type=range]::-webkit-slider-thumb {
 :root.light .stoc-meta    { color: rgba(255,255,255,0.55); }
 
 /* Stoc page navbar in light mode — override the white-text rule for non-cp pages */
-:root.light .stoc-page #navbar {
+:root.light body.stoc-page #navbar {
   background: rgba(240,244,251,0.97);
   backdrop-filter: blur(12px);
   box-shadow: 0 1px 12px rgba(13,18,37,0.06);
 }
-:root.light .stoc-page #navbar .nav-link { color: var(--muted); }
-:root.light .stoc-page #navbar .nav-link:hover,
-:root.light .stoc-page #navbar .nav-link.active { color: var(--text); background: var(--border); }
-:root.light .stoc-page #navbar .theme-toggle {
+:root.light body.stoc-page #navbar:not(.scrolled) .nav-link { color: var(--muted); }
+:root.light body.stoc-page #navbar:not(.scrolled) .nav-link:hover,
+:root.light body.stoc-page #navbar:not(.scrolled) .nav-link.active { color: var(--text); background: var(--border); }
+:root.light body.stoc-page #navbar:not(.scrolled) .theme-toggle {
   background: rgba(13,18,37,0.06);
   border-color: rgba(13,18,37,0.12);
   color: var(--text);
 }
-:root.light .stoc-page #navbar .theme-toggle:hover { background: rgba(13,18,37,0.12); }
+:root.light body.stoc-page #navbar:not(.scrolled) .theme-toggle:hover { background: rgba(13,18,37,0.12); }
 
 /* Car detail page */
 :root.light .cp-details { background: var(--dark); }
