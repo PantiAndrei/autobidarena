@@ -21,7 +21,7 @@
 
 /* ── RESET ──────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   font-family: 'Inter', sans-serif;
   background: var(--dark);
@@ -1076,6 +1076,19 @@ input[type=range]::-webkit-slider-thumb {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+.car-badge-comanda {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.7rem;
+  background: rgba(240,168,32,0.1);
+  border: 1px solid rgba(240,168,32,0.28);
+  border-radius: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 .cp-title {
   font-size: clamp(1.35rem, 4vw, 1.85rem);
   font-weight: 800;
@@ -1317,6 +1330,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 @media (max-width: 768px) {
+  .nav-inner { gap: 0.75rem; }
   .nav-links {
     position: fixed;
     top: 0; right: 0;
@@ -1329,10 +1343,11 @@ input[type=range]::-webkit-slider-thumb {
     padding: 5rem 2rem 2rem;
     gap: 0.5rem;
     transform: translateX(100%);
-    transition: transform .35s var(--ease);
+    visibility: hidden;
+    transition: transform .35s var(--ease), visibility .35s;
     z-index: 99;
   }
-  .nav-links.open { transform: translateX(0); }
+  .nav-links.open { transform: translateX(0); visibility: visible; }
   .nav-link { font-size: 1.1rem; padding: 0.6rem 0.8rem; width: 100%; }
   .btn-wa-nav { display: none; }
   .nav-toggle { display: flex; }
@@ -1350,6 +1365,9 @@ input[type=range]::-webkit-slider-thumb {
   .calc-row { grid-template-columns: 1fr; }
   .specs-table { grid-template-columns: 1fr 1fr; }
   .dotari-list { grid-template-columns: 1fr; }
+  /* Bottom CTA buttons stack vertically so they don't overflow */
+  .cp-cta-btns { flex-direction: column; flex-shrink: 1; width: 100%; }
+  .cp-cta-btns > a { justify-content: center; white-space: normal; text-align: center; }
 }
 
 /* ── THEME TOGGLE BUTTON ─────────────────────────────── */
@@ -1489,8 +1507,26 @@ input[type=range]::-webkit-slider-thumb {
 
 :root.light .stoc-hero { background: linear-gradient(160deg, #0d1225 0%, #0d1225 60%, #0a1a10 100%); }
 
+/* Stoc page navbar in light mode — override the white-text rule for non-cp pages */
+:root.light .stoc-page #navbar {
+  background: rgba(240,244,251,0.97);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 12px rgba(13,18,37,0.06);
+}
+:root.light .stoc-page #navbar .nav-link { color: var(--muted); }
+:root.light .stoc-page #navbar .nav-link:hover,
+:root.light .stoc-page #navbar .nav-link.active { color: var(--text); background: var(--border); }
+:root.light .stoc-page #navbar .theme-toggle {
+  background: rgba(13,18,37,0.06);
+  border-color: rgba(13,18,37,0.12);
+  color: var(--text);
+}
+:root.light .stoc-page #navbar .theme-toggle:hover { background: rgba(13,18,37,0.12); }
+
 /* Car detail page */
 :root.light .cp-details { background: var(--dark); }
 :root.light .cp-trust-item { color: var(--muted); }
 :root.light .cp-tabs-nav { background: rgba(13,18,37,0.05); }
 :root.light .cp-tab:hover { background: rgba(13,18,37,0.06); color: var(--text); }
+:root.light .btn-phone { border-color: rgba(13,18,37,0.2); }
+:root.light .btn-phone:hover { border-color: var(--green); color: var(--green); background: var(--green-glow); }
