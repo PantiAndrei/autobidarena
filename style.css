@@ -657,6 +657,38 @@ body:not(.cp-page) #navbar:not(.scrolled) .nav-link.active {
 }
 .contact-map iframe { display: block; }
 
+/* ── RECENZII ────────────────────────────────────────────── */
+#recenzii { background: var(--bg); }
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+.review-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.review-stars { color: #f0a820; font-size: 1rem; letter-spacing: 2px; }
+.review-text {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--muted);
+  flex: 1;
+}
+.review-author {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 /* ── FOOTER ─────────────────────────────────────────────── */
 footer {
   padding: 3rem 0;
