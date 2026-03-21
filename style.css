@@ -662,6 +662,7 @@ footer {
   padding: 3rem 0;
   background: #060910;
   border-top: 1px solid var(--border);
+  overflow-x: hidden;
 }
 .footer-inner {
   max-width: 1200px;
@@ -987,6 +988,7 @@ input[type=range]::-webkit-slider-thumb {
   border-bottom: 1px solid var(--border);
   padding: 0.65rem 0;
   padding-top: calc(0.65rem + 100px); /* clear fixed navbar: 68px logo + 2×16px padding = 100px */
+  overflow-x: clip;
 }
 .cp-breadcrumb .section-inner {
   display: flex;
@@ -1026,14 +1028,16 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 /* Gallery */
-.cp-gallery { display: flex; flex-direction: column; gap: 0.6rem; }
+.cp-gallery { display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; overflow: hidden; }
 .cp-main-img {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
+  isolation: isolate; /* fix iOS Safari overflow+border-radius clipping bug */
   background: #060a14;
   aspect-ratio: 4/3;
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  width: 100%;
 }
 .cp-main-img img {
   width: 100%; height: 100%;
@@ -1045,9 +1049,13 @@ input[type=range]::-webkit-slider-thumb {
   display: flex;
   gap: 6px;
   overflow-x: auto;
+  overscroll-behavior-x: contain; /* prevent horizontal scroll from bubbling to page */
+  touch-action: pan-x;            /* let horizontal swipe scroll thumbs, vertical scroll page */
   padding: 2px 0 4px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,0.1) transparent;
+  min-width: 0;
+  width: 100%;
 }
 .cp-thumbs .modal-thumb {
   flex-shrink: 0;
@@ -1056,6 +1064,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 /* Sidebar */
+.cp-sidebar { min-width: 0; }
 .cp-sidebar-inner {
   position: sticky;
   top: 80px;
@@ -1349,6 +1358,7 @@ input[type=range]::-webkit-slider-thumb {
     gap: 0.5rem;
     transform: translateX(100%);
     visibility: hidden;
+    contain: layout; /* prevent off-screen drawer from expanding page scroll width */
     transition: transform .35s var(--ease), visibility .35s;
     z-index: 99;
   }
