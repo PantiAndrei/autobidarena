@@ -21,7 +21,7 @@
 
 /* ── RESET ──────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; overflow-x: clip; overscroll-behavior-x: none; }
+html { scroll-behavior: smooth; overflow-x: hidden; overflow-x: clip; overscroll-behavior-x: none; }
 body {
   font-family: 'Inter', sans-serif;
   background: var(--dark);
@@ -986,7 +986,7 @@ input[type=range]::-webkit-slider-thumb {
   background: #080c1a;
   border-bottom: 1px solid var(--border);
   padding: 0.65rem 0;
-  padding-top: calc(0.65rem + 80px); /* clear fixed navbar */
+  padding-top: calc(0.65rem + 100px); /* clear fixed navbar: 68px logo + 2×16px padding = 100px */
 }
 .cp-breadcrumb .section-inner {
   display: flex;
@@ -1016,6 +1016,7 @@ input[type=range]::-webkit-slider-thumb {
 .cp-hero {
   background: linear-gradient(180deg, #060a14 0%, var(--dark) 100%);
   padding: 2rem 0 3.5rem;
+  overflow-x: clip; /* prevent horizontal overflow (clip doesn't break sticky) */
 }
 .cp-hero-inner {
   display: grid;
@@ -1203,6 +1204,7 @@ input[type=range]::-webkit-slider-thumb {
   background: #080c1a;
   padding: 2.5rem 0 4rem;
   border-top: 1px solid var(--border);
+  overflow-x: clip;
 }
 .cp-tabs-nav {
   display: flex;
@@ -1263,6 +1265,7 @@ input[type=range]::-webkit-slider-thumb {
   background: linear-gradient(135deg, #0a0f20 0%, #080c1a 100%);
   padding: 4rem 0;
   border-top: 1px solid var(--border);
+  overflow-x: clip;
 }
 .cp-cta-inner {
   display: flex;
@@ -1298,7 +1301,7 @@ input[type=range]::-webkit-slider-thumb {
   .cp-mobile-bar { display: flex; }
   .cp-cta-section { padding-bottom: calc(4rem + 72px); }
   .cp-main-img { aspect-ratio: 16/9; }
-  .cp-breadcrumb { padding-top: calc(0.5rem + 68px); }
+  .cp-breadcrumb { padding-top: calc(0.5rem + 100px); }
   .cp-ctas { display: none; }
   .cp-hero { padding: 1.2rem 0 2rem; }
   .cp-details { padding: 1.5rem 0 3rem; }
