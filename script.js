@@ -211,6 +211,9 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
+/* ── FOOTER YEAR ────────────────────────────────────────── */
+document.getElementById('footerYear').textContent = new Date().getFullYear();
+
 /* ── THEME TOGGLE ───────────────────────────────────────── */
 document.getElementById('themeToggle').addEventListener('click', () => {
   const isLight = document.documentElement.classList.toggle('light');

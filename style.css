@@ -678,6 +678,9 @@ footer {
 .footer-tagline { font-size: 0.9rem; color: var(--muted); }
 .footer-addr { font-size: 0.82rem; color: rgba(255,255,255,0.35); }
 .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.25); margin-top: 0.5rem; }
+.footer-made { font-size: 0.78rem; color: rgba(255,255,255,0.25); margin-top: 0.25rem; }
+.footer-made a { color: rgba(255,255,255,0.45); text-decoration: none; transition: color .2s; }
+.footer-made a:hover { color: var(--green); }
 
 /* ── MODAL PREMIUM SPLIT ─────────────────────────────────── */
 .modal {
@@ -1511,6 +1514,8 @@ input[type=range]::-webkit-slider-thumb {
 }
 :root.light .footer-addr { color: rgba(13,18,37,0.4); }
 :root.light .footer-copy { color: rgba(13,18,37,0.3); }
+:root.light .footer-made { color: rgba(13,18,37,0.3); }
+:root.light .footer-made a { color: rgba(13,18,37,0.5); }
 :root.light .trust-note { color: rgba(13,18,37,0.65) !important; }
 :root.light .car-spec {
   background: rgba(13,18,37,0.05);
