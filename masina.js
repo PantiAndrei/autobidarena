@@ -67,6 +67,14 @@ function renderMainImg() {
       <span class="slider-count">${sliderIdx + 1} / ${total}</span>
     ` : ''}
   `;
+  /* Fade-in when image loads */
+  const img = wrap.querySelector('img');
+  const show = () => img.classList.add('gallery-img--loaded');
+  if (img.complete && img.naturalWidth > 0) {
+    requestAnimationFrame(() => requestAnimationFrame(show));
+  } else {
+    img.addEventListener('load', show, { once: true });
+  }
   if (total > 1) {
     document.getElementById('cpSliderPrev').addEventListener('click', () => sliderMove(-1));
     document.getElementById('cpSliderNext').addEventListener('click', () => sliderMove(1));
@@ -89,7 +97,27 @@ function renderThumbs() {
       renderThumbs();
     });
   });
+  /* Scroll active thumb into view */
+  const active = el.querySelector('.modal-thumb.active');
+  if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 }
+
+/* ── GALLERY TOUCH SWIPE ── */
+(function initGallerySwipe() {
+  const wrap = document.getElementById('cpMainImg');
+  let sx = 0, sy = 0;
+  wrap.addEventListener('touchstart', e => {
+    sx = e.touches[0].clientX;
+    sy = e.touches[0].clientY;
+  }, { passive: true });
+  wrap.addEventListener('touchend', e => {
+    const dx = sx - e.changedTouches[0].clientX;
+    const dy = sy - e.changedTouches[0].clientY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40 && sliderImages.length > 1) {
+      sliderMove(dx > 0 ? 1 : -1);
+    }
+  }, { passive: true });
+}());
 
 function sliderMove(dir) {
   sliderIdx = (sliderIdx + dir + sliderImages.length) % sliderImages.length;
@@ -306,7 +334,7 @@ function renderPage(car) {
     } : undefined
   };
   document.getElementById('jsonLd').textContent =
-    JSON.stringify(ld, (k, v) => v === undefined ? undefined : v);
+    JSON.stringify(ld, (_k, v) => v === undefined ? undefined : v);
 
   /* Show content */
   document.getElementById('cpLoading').style.display = 'none';
