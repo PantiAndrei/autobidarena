@@ -6,6 +6,7 @@
   <title>Admin – AutoBid Arena</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||(t===null&&window.matchMedia('(prefers-color-scheme:light)').matches))document.documentElement.classList.add('light');})();</script>
   <style>
     :root {
       --dark:    #080c1a;
@@ -17,6 +18,13 @@
       --muted:   rgba(232,234,246,0.55);
       --border:  rgba(255,255,255,0.08);
       --radius:  10px;
+    }
+    :root.light {
+      --dark:   #eef2fa;
+      --card:   #ffffff;
+      --text:   #0d1225;
+      --muted:  rgba(13,18,37,0.5);
+      --border: rgba(13,18,37,0.1);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--text); min-height: 100vh; }
@@ -246,6 +254,23 @@
       cursor: pointer;
       flex-shrink: 0;
     }
+
+    /* ── LIGHT MODE OVERRIDES ── */
+    :root.light body { background: var(--dark); }
+    :root.light .admin-header { background: rgba(238,242,250,0.95); }
+    :root.light thead { background: rgba(0,0,0,0.04); }
+    :root.light tr:hover td { background: rgba(0,0,0,0.02); }
+    :root.light input[type=text], :root.light input[type=number],
+    :root.light input[type=email], :root.light input[type=password],
+    :root.light select, :root.light textarea {
+      background: rgba(0,0,0,0.04);
+      color: var(--text);
+    }
+    :root.light select option { background: #ffffff; }
+    :root.light .dotari-grid { background: rgba(0,0,0,0.03); }
+    :root.light .img-hint { color: rgba(13,18,37,0.35) !important; }
+    :root.light .td-img img { background: #dde3f0; }
+    :root.light .img-thumb { background: #dde3f0; border-color: var(--border); }
 
     @media (max-width: 600px) {
       .form-grid { grid-template-columns: 1fr; }
