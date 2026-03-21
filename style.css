@@ -504,7 +504,7 @@ body:not(.cp-page) #navbar:not(.scrolled) .nav-link.active {
   color: var(--muted);
   font-weight: 500;
 }
-.cc-spec svg { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.7; }
+.cc-spec svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--green); opacity: 0.85; }
 
 /* Actions */
 .cc-actions {
@@ -1463,6 +1463,22 @@ input[type=range]::-webkit-slider-thumb {
 :root.light .car-card:hover {
   box-shadow: 0 24px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(45,198,83,0.4);
 }
+
+/* ── STOC PAGE ──────────────────────────────────────────── */
+.stoc-page #navbar { background: var(--dark); }
+.stoc-hero {
+  padding: 7rem 0 3rem;
+  background: linear-gradient(160deg, #080f22 0%, #0d1225 60%, #0a1a10 100%);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.stoc-hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; margin-bottom: 0.5rem; }
+.stoc-hero p  { color: var(--muted); font-size: 1rem; margin-bottom: 1.5rem; }
+.stoc-meta    { display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.9rem; color: var(--muted); }
+.stoc-meta strong { color: var(--green); font-size: 1.4rem; font-weight: 800; }
+.stoc-body { padding: 2.5rem 0 5rem; }
+
+:root.light .stoc-hero { background: linear-gradient(160deg, #0d1225 0%, #0d1225 60%, #0a1a10 100%); }
 
 /* Car detail page */
 :root.light .cp-details { background: var(--dark); }

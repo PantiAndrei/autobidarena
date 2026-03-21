@@ -1,5 +1,5 @@
 /* ============================================================
-   AUTOBID ARENA — MAIN SCRIPT
+   AUTOBID ARENA — STOC PAGE SCRIPT
    ============================================================ */
 
 /* ── FIREBASE CONFIG ────────────────────────────────────── */
@@ -36,21 +36,6 @@ navLinks.querySelectorAll('.nav-link').forEach(link => {
   });
 });
 
-const sections   = document.querySelectorAll('section[id]');
-const navLinkEls = document.querySelectorAll('.nav-link');
-
-const sectionObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    navLinkEls.forEach(link => {
-      link.classList.toggle('active',
-        link.getAttribute('href') === `#${entry.target.id}`);
-    });
-  });
-}, { rootMargin: '-45% 0px -45% 0px' });
-
-sections.forEach(s => sectionObserver.observe(s));
-
 /* ── SCROLL REVEAL ──────────────────────────────────────── */
 const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -59,13 +44,6 @@ const revealObserver = new IntersectionObserver(entries => {
     revealObserver.unobserve(entry.target);
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('.reveal').forEach((el, i) => {
-  if (el.classList.contains('service-card')) {
-    el.style.transitionDelay = `${(i % 6) * 0.07}s`;
-  }
-  revealObserver.observe(el);
-});
 
 /* ── HELPERS ────────────────────────────────────────────── */
 function buildWALink(car) {
@@ -85,21 +63,7 @@ function calcMonthlyRate(pret, avansPercent, months) {
   );
 }
 
-function formatPrice(car) {
-  if (car.laComanda) return '<span class="car-price comanda">La Comanda</span>';
-  if (!car.pret) return '<span class="car-price comanda">Pret la cerere</span>';
-  return `<span class="car-price">&euro; ${Number(car.pret).toLocaleString('ro-RO')}</span>`;
-}
-
-/* ── LOAD CARS FROM FIREBASE ─────────────────────────────── */
-const carsGrid   = document.getElementById('carsGrid');
-const emptyStock = document.getElementById('emptyStock');
-const statCars   = document.getElementById('statCars');
-
-let allCars      = [];
-let activeFilter = 'all';
-
-/* SVG icons for car specs */
+/* ── SVG ICONS ──────────────────────────────────────────── */
 const ICO = {
   an:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="8" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="15" r="1" fill="currentColor" stroke="none"/></svg>`,
   km:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4.5 14.5a8 8 0 1 1 15 0"/><path d="M12 14.5l-3.5-5.5"/><circle cx="12" cy="14.5" r="1.4" fill="currentColor" stroke="none"/></svg>`,
@@ -108,6 +72,14 @@ const ICO = {
   cp:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13H12L11 22l8.5-11H12L13 2z"/></svg>`,
   pin:  `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`,
 };
+
+/* ── LOAD CARS FROM FIREBASE ─────────────────────────────── */
+const carsGrid   = document.getElementById('carsGrid');
+const emptyStock = document.getElementById('emptyStock');
+const statCars   = document.getElementById('statCars');
+
+let allCars      = [];
+let activeFilter = 'all';
 
 function renderCars(cars) {
   carsGrid.innerHTML = '';
@@ -135,7 +107,7 @@ function renderCars(cars) {
     else if (!car.pret) priceHtml = `<div class="cc-price comanda">Pre&#x21B; la cerere</div>`;
     else                priceHtml = `<div class="cc-price">&euro;${Number(car.pret).toLocaleString('ro-RO')}</div>`;
 
-    /* Specs rows — 2 per row, icon + label */
+    /* Specs rows */
     const specRows = [
       car.an          && `<div class="cc-spec">${ICO.an}<span>${car.an}</span></div>`,
       car.km          && `<div class="cc-spec">${ICO.km}<span>${Number(car.km).toLocaleString('ro-RO')} km</span></div>`,
