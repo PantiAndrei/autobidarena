@@ -99,6 +99,16 @@ const statCars   = document.getElementById('statCars');
 let allCars      = [];
 let activeFilter = 'all';
 
+/* SVG icons for car specs */
+const ICO = {
+  an:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  km:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  fuel: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 22V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v15"/><path d="M3 11h12"/><path d="M15 7l4 4v6a1 1 0 0 0 2 0v-6l-2-2"/></svg>`,
+  gear: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M5 8v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><line x1="12" y1="12" x2="12" y2="16"/></svg>`,
+  cp:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  pin:  `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`,
+};
+
 function renderCars(cars) {
   carsGrid.innerHTML = '';
 
@@ -117,46 +127,47 @@ function renderCars(cars) {
     const imgSrc = (car.imagini && car.imagini[0]) || car.imagine
       || 'https://via.placeholder.com/600x375/0d1225/2dc653?text=AutoBid+Arena';
     const imgCount = (car.imagini || []).length;
-
     const rate = calcMonthlyRate(car.pret, 20, 60);
-    const rateHtml = rate
-      ? `<div class="car-rate">De la <strong>&euro; ${rate}</strong> / luna</div>`
-      : '';
 
-    const cpCil = [
-      car.cp        ? `${car.cp} CP`    : '',
-      car.cilindree ? `${Number(car.cilindree).toLocaleString('ro-RO')} cm&sup3;` : '',
-    ].filter(Boolean).join(' &middot; ');
+    /* Price block */
+    let priceHtml;
+    if (car.laComanda)  priceHtml = `<div class="car-price-main comanda">La Coman&#x103;</div>`;
+    else if (!car.pret) priceHtml = `<div class="car-price-main comanda">Pre&#x21B; la cerere</div>`;
+    else                priceHtml = `<div class="car-price-main">&euro;&nbsp;${Number(car.pret).toLocaleString('ro-RO')}</div>`;
+
+    /* Specs grid items */
+    const specs = [
+      car.an          && `<div class="car-spec-item">${ICO.an}<span>${car.an}</span></div>`,
+      car.km          && `<div class="car-spec-item">${ICO.km}<span>${Number(car.km).toLocaleString('ro-RO')} km</span></div>`,
+      car.combustibil && `<div class="car-spec-item">${ICO.fuel}<span>${car.combustibil}</span></div>`,
+      car.transmisie  && `<div class="car-spec-item">${ICO.gear}<span>${car.transmisie}</span></div>`,
+      car.cp          && `<div class="car-spec-item">${ICO.cp}<span>${car.cp} CP</span></div>`,
+    ].filter(Boolean).join('');
+
+    /* Subtitle line (caroserie · normă) */
+    const subtitle = [car.caroserie, car.normaPoluare].filter(Boolean).join(' · ');
 
     card.innerHTML = `
       <div class="car-img-wrap">
         <img src="${imgSrc}" alt="${car.marca} ${car.model}" loading="lazy" />
-        <div class="car-img-overlay">
-          <div class="car-img-title">${car.marca} ${car.model}${car.an ? ' &middot; ' + car.an : ''}</div>
-          ${cpCil ? `<div class="car-img-engine">${cpCil}</div>` : ''}
-        </div>
-        ${car.laComanda ? '<span class="car-badge-comanda">La Comanda</span>' : ''}
+        ${car.laComanda
+          ? '<span class="car-badge-tl car-badge-comanda">La Coman&#x103;</span>'
+          : '<span class="car-badge-tl car-badge-rec">Recomandat</span>'
+        }
+        ${rate ? `<span class="car-rate-badge">De la &euro;${rate} / lun&auml;</span>` : ''}
         ${imgCount > 1 ? `<span class="car-img-count">&#128247; ${imgCount}</span>` : ''}
       </div>
       <div class="car-body">
-        <div class="car-specs">
-          ${car.an          ? `<span class="car-spec">${car.an}</span>` : ''}
-          ${car.km          ? `<span class="car-spec">${Number(car.km).toLocaleString('ro-RO')} km</span>` : ''}
-          ${car.combustibil ? `<span class="car-spec">${car.combustibil}</span>` : ''}
-          ${car.transmisie  ? `<span class="car-spec">${car.transmisie}</span>` : ''}
-          ${car.caroserie   ? `<span class="car-spec">${car.caroserie}</span>` : ''}
-        </div>
-        <div class="car-price-row">
-          <div>
-            ${formatPrice(car)}
-            ${rateHtml}
-          </div>
-          <div class="car-actions">
-            <a href="${buildWALink(car)}" target="_blank" class="car-btn-wa" onclick="event.stopPropagation()" aria-label="WhatsApp">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.122 1.532 5.856L.073 23.927l6.244-1.638A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.213-3.706.972.988-3.61-.234-.37A9.818 9.818 0 1 1 12 21.818z"/></svg>
-            </a>
-            <a href="/masina/${car.id}" class="car-btn-details" onclick="event.stopPropagation()">Detalii</a>
-          </div>
+        <div class="car-location">${ICO.pin} Sibiu</div>
+        <div class="car-name">${car.marca} ${car.model}</div>
+        ${subtitle ? `<div class="car-subtitle">${subtitle}</div>` : ''}
+        ${priceHtml}
+        ${specs ? `<div class="car-specs-grid">${specs}</div>` : ''}
+        <div class="car-card-actions">
+          <a href="${buildWALink(car)}" target="_blank" class="car-btn-wa" onclick="event.stopPropagation()" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.122 1.532 5.856L.073 23.927l6.244-1.638A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.213-3.706.972.988-3.61-.234-.37A9.818 9.818 0 1 1 12 21.818z"/></svg>
+          </a>
+          <a href="/masina/${car.id}" class="car-btn-full" onclick="event.stopPropagation()">Vezi detalii</a>
         </div>
       </div>
     `;
