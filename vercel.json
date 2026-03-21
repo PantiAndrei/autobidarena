@@ -1,6 +1,7 @@
 {
   "rewrites": [
-    { "source": "/stoc",       "destination": "/stoc.html"  },
+    { "source": "/stoc",       "destination": "/stoc.html"   },
+    { "source": "/admin",      "destination": "/admin.html"  },
     { "source": "/masina/:id", "destination": "/masina.html" }
   ]
 }
