@@ -1,5 +1,7 @@
 {
+  "cleanUrls": true,
   "rewrites": [
+    { "source": "/stoc",       "destination": "/stoc.html"  },
     { "source": "/masina/:id", "destination": "/masina.html" }
   ]
 }
