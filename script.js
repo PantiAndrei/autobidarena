@@ -127,50 +127,43 @@ function renderCars(cars) {
     const imgSrc = (car.imagini && car.imagini[0]) || car.imagine
       || 'https://via.placeholder.com/600x375/0d1225/2dc653?text=AutoBid+Arena';
     const imgCount = (car.imagini || []).length;
-    const rate = calcMonthlyRate(car.pret, 20, 60);
-
-    /* Horizontal specs */
-    const specBar = [
-      car.km          ? `<span>${Number(car.km).toLocaleString('ro-RO')} km</span>` : '',
-      car.combustibil ? `<span>${car.combustibil}</span>` : '',
-      car.transmisie  ? `<span>${car.transmisie}</span>` : '',
-      car.cp          ? `<span>${car.cp} CP</span>` : '',
-    ].filter(Boolean).join('');
+    const rate     = calcMonthlyRate(car.pret, 20, 60);
 
     /* Price */
     let priceHtml;
-    if (car.laComanda)  priceHtml = `<div class="car-price-main comanda">La Coman&#x103;</div>`;
-    else if (!car.pret) priceHtml = `<div class="car-price-main comanda">Pre&#x21B; la cerere</div>`;
-    else                priceHtml = `<div class="car-price-main">&euro;&nbsp;${Number(car.pret).toLocaleString('ro-RO')}</div>`;
+    if (car.laComanda)  priceHtml = `<div class="cc-price comanda">La Coman&#x103;</div>`;
+    else if (!car.pret) priceHtml = `<div class="cc-price comanda">Pre&#x21B; la cerere</div>`;
+    else                priceHtml = `<div class="cc-price">&euro;${Number(car.pret).toLocaleString('ro-RO')}</div>`;
 
-    const imgMeta = [car.an, car.caroserie].filter(Boolean).join(' &middot; ');
+    /* Specs rows — 2 per row, icon + label */
+    const specRows = [
+      car.an          && `<div class="cc-spec">${ICO.an}<span>${car.an}</span></div>`,
+      car.km          && `<div class="cc-spec">${ICO.km}<span>${Number(car.km).toLocaleString('ro-RO')} km</span></div>`,
+      car.combustibil && `<div class="cc-spec">${ICO.fuel}<span>${car.combustibil}</span></div>`,
+      car.transmisie  && `<div class="cc-spec">${ICO.gear}<span>${car.transmisie}</span></div>`,
+      car.cp          && `<div class="cc-spec">${ICO.cp}<span>${car.cp} CP</span></div>`,
+    ].filter(Boolean).join('');
 
     card.innerHTML = `
       <div class="car-img-wrap">
         <img src="${imgSrc}" alt="${car.marca} ${car.model}" loading="lazy" />
-        <div class="car-img-overlay">
-          <div class="car-img-name">${car.marca} ${car.model}</div>
-          ${imgMeta ? `<div class="car-img-meta">${imgMeta}</div>` : ''}
-        </div>
-        <span class="car-badge-tl ${car.laComanda ? 'car-badge-comanda' : 'car-badge-rec'}">
+        <span class="cc-badge ${car.laComanda ? 'cc-badge-comanda' : 'cc-badge-rec'}">
           ${car.laComanda ? 'La Coman&#x103;' : 'Recomandat'}
         </span>
-        ${rate ? `<span class="car-rate-badge">De la &euro;${rate}&thinsp;/&thinsp;lun&auml;</span>` : ''}
-        ${imgCount > 1 ? `<span class="car-img-count">&#128247; ${imgCount}</span>` : ''}
+        ${rate ? `<span class="cc-rate-badge">De la &euro;${rate} / lun&auml;</span>` : ''}
+        ${imgCount > 1 ? `<span class="cc-img-count">&#128247; ${imgCount}</span>` : ''}
       </div>
       <div class="car-body">
-        <div class="car-price-row">
-          ${priceHtml}
-          ${rate ? `<div class="car-price-rate">~&euro;${rate}&thinsp;/&thinsp;lun&auml;</div>` : ''}
-        </div>
-        ${specBar ? `<div class="car-specs-bar">${specBar}</div>` : ''}
-        <div class="car-card-actions">
-          <a href="${buildWALink(car)}" target="_blank" class="car-btn-wa" onclick="event.stopPropagation()" aria-label="WhatsApp">
+        <div class="cc-location">${ICO.pin} Sibiu</div>
+        <div class="cc-name">${car.marca} ${car.model}</div>
+        ${car.caroserie ? `<div class="cc-trim">${car.caroserie}${car.normaPoluare ? ' &middot; ' + car.normaPoluare : ''}</div>` : ''}
+        ${priceHtml}
+        ${specRows ? `<div class="cc-specs-grid">${specRows}</div>` : ''}
+        <div class="cc-actions">
+          <a href="${buildWALink(car)}" target="_blank" class="cc-btn-wa" onclick="event.stopPropagation()" aria-label="WhatsApp">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.122 1.532 5.856L.073 23.927l6.244-1.638A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.213-3.706.972.988-3.61-.234-.37A9.818 9.818 0 1 1 12 21.818z"/></svg>
           </a>
-          <a href="/masina/${car.id}" class="car-btn-full" onclick="event.stopPropagation()">
-            Detalii complete <span class="btn-arr">&#8594;</span>
-          </a>
+          <a href="/masina/${car.id}" class="cc-btn-details" onclick="event.stopPropagation()">Detalii</a>
         </div>
       </div>
     `;
