@@ -1385,11 +1385,12 @@ input[type=range]::-webkit-slider-thumb {
     gap: 0.5rem;
     transform: translateX(100%);
     visibility: hidden;
-    contain: layout; /* prevent off-screen drawer from expanding page scroll width */
     transition: transform .35s var(--ease), visibility .35s;
     z-index: 99;
   }
   .nav-links.open { transform: translateX(0); visibility: visible; }
+  /* Hamburger must always be above the drawer (z-index 99) */
+  .nav-toggle { position: relative; z-index: 101; }
   .nav-link { font-size: 1.1rem; padding: 0.6rem 0.8rem; width: 100%; }
   .btn-wa-nav { display: none; }
   .nav-toggle { display: flex; }

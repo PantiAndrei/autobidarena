@@ -33,6 +33,12 @@ navLinks.querySelectorAll('.nav-link').forEach(link => {
     navToggle.classList.remove('open');
   });
 });
+document.addEventListener('click', e => {
+  if (navLinks.classList.contains('open') && !navbar.contains(e.target)) {
+    navLinks.classList.remove('open');
+    navToggle.classList.remove('open');
+  }
+});
 
 /* ── GET CAR ID FROM URL: /masina/[carId] ── */
 const carId = window.location.pathname.split('/').filter(Boolean).pop();

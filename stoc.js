@@ -35,6 +35,12 @@ navLinks.querySelectorAll('.nav-link').forEach(link => {
     navToggle.classList.remove('open');
   });
 });
+document.addEventListener('click', e => {
+  if (navLinks.classList.contains('open') && !navbar.contains(e.target)) {
+    navLinks.classList.remove('open');
+    navToggle.classList.remove('open');
+  }
+});
 
 /* ── SCROLL REVEAL ──────────────────────────────────────── */
 const revealObserver = new IntersectionObserver(entries => {
